@@ -46,7 +46,8 @@ if ($smtp_host = getenv('SMTP_HOST')) {
     'port' => (int) (getenv('SMTP_PORT') ?: 587),
     'user' => getenv('SMTP_USER') ?: NULL,
     'password' => getenv('SMTP_PASSWORD') ?: NULL,
-    'options' => [],
+    // Relays such as smtp-relay.gmail.com refuse the default "[127.0.0.1]".
+    'options' => ['local_domain' => reset($hosts)],
   ];
 }
 if ($site_mail = getenv('SITE_MAIL')) {

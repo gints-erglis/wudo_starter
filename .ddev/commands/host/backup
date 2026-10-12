@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+## Description: Back up the database and uploaded files to backups/<timestamp>, optionally copying them to another server
+## Usage: backup
+## Example: "ddev backup"
+
+set -euo pipefail
+cd "$DDEV_APPROOT"
+
+# BACKUP_REMOTE and BACKUP_KEEP may be set in .ddev/.env.
+setting() {
+  local value=""
+  if [ -f .ddev/.env ]; then
+    value=$(grep -E "^$1=" .ddev/.env | tail -n 1 | cut -d= -f2- || true)
+  fi
+  echo "${value:-$2}"
+}
+remote=$(setting BACKUP_REMOTE "")
+keep=$(setting BACKUP_KEEP 14)
+
+dir="backups/$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$dir"
+
+ddev export-db --file="$dir/db.sql.gz"
+# Generated files are left out; Drupal rebuilds them.
+tar -czf "$dir/files.tar.gz" -C web/sites/default \
+  --exclude=files/css --exclude=files/js --exclude=files/php --exclude=files/styles \
+  files
+git rev-parse HEAD > "$dir/commit" 2>/dev/null || true
+
+# Keep the newest ones.
+ls -1d backups/*/ | sort -r | tail -n +"$((keep + 1))" | while read -r old; do
+  rm -rf "$old"
+done
+
+echo "Backup written to $dir ($(du -sh "$dir" | cut -f1))."
+
+if [ -n "$remote" ]; then
+  rsync -a --delete backups/ "$remote"
+  echo "Copied to $remote."
+fi

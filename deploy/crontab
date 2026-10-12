@@ -1,0 +1,10 @@
+# Crontab of the user that owns the project: crontab -e
+# Replace /srv/sites/example with the path of the project.
+
+PATH=/usr/local/bin:/usr/bin:/bin
+
+# Drupal cron every 15 minutes.
+*/15 * * * * cd /srv/sites/example && ddev drush cron --quiet
+
+# Database and uploaded files every night, copied to BACKUP_REMOTE if set.
+30 2 * * * cd /srv/sites/example && ddev backup >> backups/backup.log 2>&1

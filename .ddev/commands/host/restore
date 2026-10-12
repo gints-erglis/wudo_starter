@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+## Description: Restore the database and uploaded files from a backup made by "ddev backup"
+## Usage: restore <backup-directory> [--yes]
+## Example: "ddev restore backups/20260101-023000"
+
+set -euo pipefail
+cd "$DDEV_APPROOT"
+
+dir="${1:-}"
+dir="${dir%/}"
+if [ -z "$dir" ] || [ ! -f "$dir/db.sql.gz" ] || [ ! -f "$dir/files.tar.gz" ]; then
+  echo "Usage: ddev restore <backup-directory>, e.g. ddev restore backups/20260101-023000" >&2
+  echo "The directory must contain db.sql.gz and files.tar.gz." >&2
+  exit 1
+fi
+
+if [ "${2:-}" != "--yes" ]; then
+  read -r -p "This replaces the database and uploaded files of $DDEV_SITENAME with $dir. Continue? [y/N] " answer
+  case "$answer" in
+    y|Y|yes) ;;
+    *) echo "Nothing was changed."; exit 1 ;;
+  esac
+fi
+
+if [ -f "$dir/commit" ] && [ "$(cat "$dir/commit")" != "$(git rev-parse HEAD 2>/dev/null)" ]; then
+  echo "Note: the backup was made at commit $(cut -c1-7 "$dir/commit"), the code here is at $(git rev-parse --short HEAD)."
+fi
+
+ddev import-db --file="$dir/db.sql.gz"
+# Uploaded files are replaced, not merged, so the site matches the backup.
+ddev exec "find web/sites/default/files -mindepth 1 -maxdepth 1 -exec rm -rf {} +"
+tar -xzf "$dir/files.tar.gz" -C web/sites/default
+ddev mutagen sync 2>/dev/null || true
+ddev drush cache:rebuild
+
+echo "Restored $dir."

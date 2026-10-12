@@ -46,3 +46,7 @@ NOTES.md
 
 # Stray build output; the theme builds into its own dist/.
 /dist/
+
+# Production: backups and server secrets.
+/backups/
+/.ddev/.env

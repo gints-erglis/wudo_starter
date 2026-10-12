@@ -257,6 +257,19 @@ Things to do on a real site:
   allow evaluating strings as code. Blocking a script until consent, as done
   here, does not need any.
 
+## Production
+
+`docs/production.md` describes running the site on your own Ubuntu server:
+DDEV behind the host's nginx with Let's Encrypt, production settings, mail
+through SMTP, cron, and moving the site to another server. The files it uses
+are in `deploy/`. Three commands do the routine work:
+
+```bash
+ddev deploy                          # update the running site to the latest code
+ddev backup                          # database and uploaded files
+ddev restore backups/<timestamp>     # put a backup back
+```
+
 ## Settings and secrets
 
 `web/sites/default/settings.php` is tracked in Git and contains no credentials.

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+## Description: Update a running site to the latest code: backup, git pull, dependencies, theme build, database updates, configuration import
+## Usage: deploy
+## Example: "ddev deploy"
+
+set -euo pipefail
+cd "$DDEV_APPROOT"
+
+# A way back if the update goes wrong: ddev restore backups/<this one>.
+ddev backup
+
+git pull --ff-only
+
+ddev composer install --no-dev --optimize-autoloader
+ddev exec -d /var/www/html/web/themes/custom/wudo "npm ci && npm run build"
+# Database updates, configuration import and cache rebuild, in the safe order.
+ddev drush deploy
+
+echo "Deployed $(git rev-parse --short HEAD)."

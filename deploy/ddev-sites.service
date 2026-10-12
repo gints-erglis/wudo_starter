@@ -1,0 +1,23 @@
+# Starts every DDEV project after a reboot.
+#
+#   sudo cp deploy/ddev-sites.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable ddev-sites
+#
+# Replace "deploy" with the user that owns the projects.
+
+[Unit]
+Description=DDEV sites
+After=docker.service network-online.target
+Requires=docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+User=deploy
+ExecStart=/usr/bin/ddev start --all
+ExecStop=/usr/bin/ddev poweroff
+TimeoutStartSec=600
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+# DDEV overrides for a production server.
+# Copy to .ddev/config.local.yaml (not tracked) and adjust.
+
+# The host's nginx sends the site's traffic to this port. It is bound to
+# 127.0.0.1 only, so the site cannot be reached around nginx. Use a different
+# port for every DDEV project on the server.
+host_webserver_port: "8081"
+
+# Keep the database off the host's ports; use "ddev mysql" or "ddev export-db".
+host_db_port: ""
+
+xdebug_enabled: false

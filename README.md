@@ -42,6 +42,34 @@ ddev site-install --demo
 Running the command on an existing site reinstalls it; Drush asks before
 dropping the database.
 
+## Starting a new site
+
+To build a site on the starter rather than work on the starter itself, run
+this from the starter's directory:
+
+```bash
+ddev new-site acme --title="Acme Ltd" --mail=info@acme.example --demo
+```
+
+It creates `../acme` with the full Git history, names the DDEV project
+`acme` so that it runs next to the starter and other sites, sets the site
+name and e-mail address in `config/sync`, and installs the site. Leave out
+`--demo` and use `--install` for the bare home page, or neither to install
+later. `--dir=` puts it somewhere else.
+
+The new repository has no `origin`; the starter is kept as the remote
+`starter`. The two changed files are left uncommitted:
+
+```bash
+cd ../acme
+git commit -am "Start acme"
+git remote add origin <repository> && git push -u origin HEAD
+```
+
+From then on the site lives on its own. To pick up a later improvement of the
+starter, `git fetch starter` and `git cherry-pick` the commit, or
+`git merge starter/main` for everything.
+
 ## Installing without DDEV
 
 Create `web/sites/default/settings.local.php` with the database connection

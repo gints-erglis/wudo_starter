@@ -23,7 +23,9 @@ npm run build
 
 # Drush asks for confirmation before dropping an existing database.
 cd "$DDEV_COMPOSER_ROOT"
-drush site:install --existing-config
+# The administrator gets the site's address instead of Drush's placeholder.
+mail=$(sed -n "s/^mail: //p" config/sync/system.site.yml | tr -d "'\"")
+drush site:install --existing-config --account-mail="$mail"
 drush recipe ../recipes/error_pages
 drush recipe "../recipes/$content"
 drush xmlsitemap:rebuild

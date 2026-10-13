@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+
+## Description: Start a new site from this starter in its own directory, under its own name
+## Usage: new-site <name> [--title="Site name"] [--mail=address] [--dir=path] [--install|--demo]
+## Example: "ddev new-site acme --title="Acme Ltd" --mail=info@acme.example --demo"
+
+set -euo pipefail
+cd "$DDEV_APPROOT"
+
+usage() {
+  cat >&2 <<'EOF'
+Usage: ddev new-site <name> [--title="Site name"] [--mail=address] [--dir=path] [--install|--demo]
+
+  <name>     DDEV project name: lowercase letters, digits and hyphens.
+  --title    Site name shown to visitors. Defaults to <name>.
+  --mail     Site e-mail address. Defaults to the starter's placeholder.
+  --dir      Where to create the site. Defaults to ../<name>.
+  --install  Start the new project and install the site with the bare home page.
+  --demo     The same, with the demo content.
+EOF
+  exit 1
+}
+
+name=""
+title=""
+mail=""
+dir=""
+install=""
+for arg in "$@"; do
+  case "$arg" in
+    --title=*) title="${arg#*=}" ;;
+    --mail=*) mail="${arg#*=}" ;;
+    --dir=*) dir="${arg#*=}" ;;
+    --install) install="yes" ;;
+    --demo) install="demo" ;;
+    -*) echo "Unknown option: $arg" >&2; usage ;;
+    *)
+      if [ -n "$name" ]; then usage; fi
+      name="$arg"
+      ;;
+  esac
+done
+
+if [[ ! "$name" =~ ^[a-z0-9]([a-z0-9-]*[a-z0-9])?$ ]]; then
+  echo "The name must consist of lowercase letters, digits and hyphens, e.g. acme-web." >&2
+  usage
+fi
+if [ -n "$mail" ] && [[ ! "$mail" =~ ^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$ ]]; then
+  echo "\"$mail\" does not look like an e-mail address." >&2
+  exit 1
+fi
+if [[ "$title" == *$'\n'* ]]; then
+  echo "The title must be one line." >&2
+  exit 1
+fi
+title="${title:-$name}"
+dir="${dir:-$(dirname "$DDEV_APPROOT")/$name}"
+
+if [ -e "$dir" ]; then
+  echo "$dir already exists." >&2
+  exit 1
+fi
+if ddev describe "$name" >/dev/null 2>&1; then
+  echo "DDEV already has a project named \"$name\"; see \"ddev list\"." >&2
+  exit 1
+fi
+if [ -n "$(git status --porcelain)" ]; then
+  echo "Note: the starter has uncommitted changes; the new site gets the committed state only."
+fi
+
+git clone --quiet "$DDEV_APPROOT" "$dir"
+
+# The starter stays reachable for picking up later improvements, but is no
+# longer where the site is pushed to.
+starter_url=$(git remote get-url origin 2>/dev/null || true)
+cd "$dir"
+if [ -n "$starter_url" ]; then
+  git remote rename origin starter
+  git remote set-url starter "$starter_url"
+else
+  git remote remove origin
+fi
+
+# Replaces the value of a top-level key in a YAML file.
+set_value() {
+  local file="$1" key="$2" value="$3"
+  # Quoted for YAML, then escaped for sed.
+  value="'${value//\'/\'\'}'"
+  value=$(printf '%s' "$value" | sed 's/[\\&|]/\\&/g')
+  sed "s|^$key: .*|$key: $value|" "$file" > "$file.new"
+  mv "$file.new" "$file"
+}
+
+sed "s|^name: .*|name: $name|" .ddev/config.yaml > .ddev/config.yaml.new
+mv .ddev/config.yaml.new .ddev/config.yaml
+set_value config/sync/system.site.yml name "$title"
+if [ -n "$mail" ]; then
+  set_value config/sync/system.site.yml mail "$mail"
+fi
+
+echo "Created \"$title\" in $dir."
+
+if [ -n "$install" ]; then
+  ddev start
+  if [ "$install" = "demo" ]; then
+    ddev site-install --demo
+  else
+    ddev site-install
+  fi
+fi
+
+echo
+echo "Next:"
+echo "  cd $dir"
+if [ -z "$install" ]; then
+  echo "  ddev start && ddev site-install          # add --demo for the demo content"
+fi
+echo "  git commit -am \"Start $name\""
+echo "  git remote add origin <repository> && git push -u origin HEAD"
+if [ -n "$starter_url" ]; then
+  echo
+  echo "Later improvements of the starter: git fetch starter, then git cherry-pick or git merge."
+fi

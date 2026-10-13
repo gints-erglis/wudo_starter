@@ -53,12 +53,13 @@ ddev new-site acme --title="Acme Ltd" --mail=info@acme.example --demo
 
 It creates `../acme` with the full Git history, names the DDEV project
 `acme` so that it runs next to the starter and other sites, sets the site
-name and e-mail address in `config/sync`, and installs the site. Leave out
+name and e-mail address in `config/sync`, gives the site its own
+`site/` directory in the theme for its look, and installs the site. Leave out
 `--demo` and use `--install` for the bare home page, or neither to install
 later. `--dir=` puts it somewhere else.
 
 The new repository has no `origin`; the starter is kept as the remote
-`starter`. The two changed files are left uncommitted:
+`starter`. The changes are left uncommitted:
 
 ```bash
 cd ../acme
@@ -386,6 +387,18 @@ npm run dev:sdc
 Build production assets with `npm run build`. `node_modules/`, `dist/` and the
 `.css` files compiled next to each component's `.scss` are ignored by Git and
 recreated by the build, so run it after changing any `.scss` file.
+
+### The site's own look
+
+What makes a site look different from the starter lives in
+`web/themes/custom/wudo/site/`: `_tokens.scss` for colors, fonts and sizes,
+`site.scss` for everything else, and `logo.svg`. It is built into
+`dist/site.css`, which is loaded after all other styles.
+
+The starter does not track that directory; the build creates it from
+`site.example/` when it is missing. `ddev new-site` adds it to the new site's
+repository, so the site's styling is versioned there and can never conflict
+with a later version of the starter. See the `README.md` in it.
 
 ### Twig template suggestions
 

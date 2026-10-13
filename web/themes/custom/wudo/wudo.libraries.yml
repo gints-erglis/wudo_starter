@@ -3,6 +3,8 @@ global:
   css:
     theme:
       dist/style.css: {}
+      # The site's own layer comes after everything else; see site/README.md.
+      dist/site.css: { weight: 100 }
       assets/fonts/fonts.css: { weight: -20 }
   js:
     js/color-scheme.js: { minified: false }

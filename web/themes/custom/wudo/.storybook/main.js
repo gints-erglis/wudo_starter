@@ -29,7 +29,7 @@ const config = {
     '@storybook/addon-docs',
   ],
   // Example assets referenced by the stories.
-  staticDirs: [{ from: '../logo.svg', to: '/logo.svg' }],
+  staticDirs: [{ from: '../site/logo.svg', to: '/logo.svg' }],
   framework: {
     name: '@storybook/html-vite',
     options: {},

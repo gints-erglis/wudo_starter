@@ -1,0 +1,12 @@
+// The site's own styles. Loaded after everything else in the theme, so a rule
+// here wins over a starter rule with the same selector.
+//
+// Most of the look is changed without new rules: components read their
+// colors and sizes from custom properties declared at the top of their .scss
+// file, and those can be set here. For example, a dark header:
+//
+// .site-header {
+//   --header-bg: var(--color-black);
+// }
+
+@use "tokens";

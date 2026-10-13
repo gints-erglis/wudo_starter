@@ -1,5 +1,7 @@
 // Global styles, as loaded by the theme on every page.
 import '../dist/style.css';
+// The site's own layer, after the starter's styles.
+import '../dist/site.css';
 
 export const parameters = {
   controls: { expanded: true },

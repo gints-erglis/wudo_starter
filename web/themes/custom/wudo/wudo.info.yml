@@ -4,6 +4,7 @@ description: Clean and minimalistic Drupal 11 theme
 package: Custom
 core_version_requirement: ^11
 base theme: false
+logo: site/logo.svg
 
 libraries:
   - wudo/global

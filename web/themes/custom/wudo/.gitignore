@@ -10,3 +10,7 @@
 
 # Static Storybook build ("npm run build-storybook").
 /storybook-static
+
+# One site's own look, created from site.example/ by the build. A site built
+# on the starter tracks it: "ddev new-site" removes these lines.
+/site/

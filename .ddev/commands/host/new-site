@@ -98,6 +98,18 @@ if [ -n "$mail" ]; then
   set_value config/sync/system.site.yml mail "$mail"
 fi
 
+# The site's own look is tracked in the site's repository; in the starter it
+# is not. See web/themes/custom/wudo/site/README.md.
+theme=web/themes/custom/wudo
+cp -R "$theme/site.example" "$theme/site"
+awk '
+  /^# One site.s own look, created from site.example/ { skip = 1 }
+  skip { if ($0 == "/site/") skip = 0; next }
+  { print }
+' "$theme/.gitignore" > "$theme/.gitignore.new"
+mv "$theme/.gitignore.new" "$theme/.gitignore"
+git add "$theme/site"
+
 echo "Created \"$title\" in $dir."
 
 if [ -n "$install" ]; then

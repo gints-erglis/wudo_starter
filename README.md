@@ -270,6 +270,9 @@ ddev backup                          # database and uploaded files
 ddev restore backups/<timestamp>     # put a backup back
 ```
 
+`docs/local-development.md` describes the other direction: getting a copy of
+the live site onto your machine and sending code and configuration back.
+
 ## Settings and secrets
 
 `web/sites/default/settings.php` is tracked in Git and contains no credentials.

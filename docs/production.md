@@ -114,7 +114,7 @@ That runs Drupal's cron every 15 minutes and a backup every night.
 
 | Command | What it does |
 | --- | --- |
-| `ddev deploy` | backup, `git pull`, Composer without dev packages, theme build, database updates, configuration import |
+| `ddev deploy` | backup, `git pull`, Composer without dev packages, theme build, database updates, configuration import, then checks that the front page answers |
 | `ddev backup` | database and uploaded files into `backups/<timestamp>`, keeps the newest `BACKUP_KEEP`, copies them to `BACKUP_REMOTE` if set |
 | `ddev restore backups/<timestamp>` | replaces the database and uploaded files with that backup |
 
@@ -125,6 +125,55 @@ at most. If an update goes wrong, `git checkout` the previous commit and
 Configuration changed on the live site (a view, a block) lives in its
 database only. Export it there with `ddev drush config:export`, commit and
 push from the server, or it is overwritten by the next `ddev deploy`.
+
+### Deploying from GitHub
+
+`.github/workflows/deploy.yml` runs `ddev deploy` on the server whenever CI
+has passed on `main`, so a push is all it takes. It can also be started by
+hand: Actions → Deploy → Run workflow. It does nothing until the repository
+has the variable `DEPLOY_TARGET`.
+
+GitHub gets an SSH key that can do one thing only. On the server, as the user
+that owns the project:
+
+```bash
+ssh-keygen -t ed25519 -N '' -C github-deploy -f ~/github-deploy
+echo "command=\"cd /var/www/<project> && ddev deploy\",restrict $(cat ~/github-deploy.pub)" >> ~/.ssh/authorized_keys
+cat ~/github-deploy       # the private key, for the secret below
+rm ~/github-deploy ~/github-deploy.pub
+```
+
+`command=` makes the server run the deploy whatever the caller asks for, and
+`restrict` turns off everything else (shell, port forwarding). A leaked key
+can start a deploy of what is already on `main`, nothing more.
+
+On your own machine, which already trusts the server:
+
+```bash
+ssh-keyscan <server>      # for the second secret
+```
+
+In the repository on GitHub, Settings → Secrets and variables → Actions:
+
+| Kind | Name | Value |
+| --- | --- | --- |
+| Variable | `DEPLOY_TARGET` | `<user>@<server>` |
+| Variable | `DEPLOY_PORT` | only if SSH is not on port 22 |
+| Secret | `DEPLOY_SSH_KEY` | the private key printed above, all lines |
+| Secret | `DEPLOY_KNOWN_HOSTS` | the output of `ssh-keyscan` |
+
+Two things on the server have to hold:
+
+- `git pull` works there without your own SSH agent. Check with
+  `ssh -T git@github.com` in a session opened without agent forwarding; if it
+  is refused, give the server a read-only deploy key in the repository's
+  settings.
+- SSH is reachable from GitHub's runners. If the firewall lets in known
+  addresses only, this workflow cannot connect.
+
+The deploy fails, and GitHub sends its usual mail about it, when any step of
+`ddev deploy` fails or the front page does not answer afterwards. The backup
+made at the start is the way back.
 
 ## 5. Moving to another server
 

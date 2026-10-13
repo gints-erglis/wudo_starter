@@ -270,6 +270,9 @@ ddev backup                          # database and uploaded files
 ddev restore backups/<timestamp>     # put a backup back
 ```
 
+With `.github/workflows/deploy.yml` set up, a push to `main` that passes CI is
+deployed without logging in to the server; see "Deploying from GitHub" there.
+
 `docs/local-development.md` describes the other direction: getting a copy of
 the live site onto your machine and sending code and configuration back.
 

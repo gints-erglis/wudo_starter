@@ -17,4 +17,17 @@ ddev exec -d /var/www/html/web/themes/custom/wudo "npm ci && npm run build"
 # Database updates, configuration import and cache rebuild, in the safe order.
 ddev drush deploy
 
-echo "Deployed $(git rev-parse --short HEAD)."
+# The site has to answer afterwards, or the deploy counts as failed. Asked
+# inside the container, as the host's nginx would, so a login in front of the
+# site does not get in the way.
+host=$(grep -E '^SITE_HOSTS=' .ddev/.env 2>/dev/null | tail -n 1 | cut -d= -f2- | cut -d, -f1 || true)
+code=$(ddev exec "curl -s -o /dev/null -w '%{http_code}' -H 'Host: ${host:-localhost}' -H 'X-Forwarded-Proto: https' http://localhost/")
+case "$code" in
+  2*|3*) ;;
+  *)
+    echo "Deployed $(git rev-parse --short HEAD), but the front page answers with $code." >&2
+    exit 1
+    ;;
+esac
+
+echo "Deployed $(git rev-parse --short HEAD); the front page answers with $code."

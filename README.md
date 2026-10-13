@@ -242,6 +242,39 @@ Everything is done in the UI, without touching templates:
 - the page title block is shown on listed paths only; keep `/projects` and
   `/projects/*` on that list when changing the aliases.
 
+## Adding search
+
+Search is optional, like projects:
+
+```bash
+ddev add-search
+```
+
+It adds a search button next to the favorites in the header. The button
+opens a drawer with a search field; the first results appear while typing,
+with the matches marked, and a link leads to all of them on `/search`.
+Without JavaScript the button is a link to `/search`, which has its own
+form.
+
+- Every published page of every content type is searched, in the language
+  the visitor is reading. A content type added later is included on its own.
+- What is searched is the page as a visitor sees its fields
+  (`node--search-index.html.twig`), so text in paragraphs is found too. The
+  error pages are left out.
+- New and changed pages are searchable as soon as they are saved.
+- Results come from `/api/search?q=…` as JSON: `total`, `items` (`title`,
+  `url`, `type`, `excerpt`) and the `url` of the search page.
+
+It is built on the Search API module with its database backend: no extra
+service, and nothing to set up on the server. Searches match parts of words
+("mat" finds "materials"), but not misspellings or other forms of a word.
+For that, the "Database" server at `/admin/config/search/search-api` can be
+replaced with Solr or Elasticsearch; the button, the drawer, the endpoint and
+the page stay as they are, because they only know the index.
+
+After restoring a backup the index comes with the database. Should it ever be
+out of step: `ddev drush search-api:rebuild-tracker && ddev drush search-api:index`.
+
 ## Adding cookie consent
 
 A consent notice is optional; a site that sets no cookies beyond its own and
@@ -351,6 +384,8 @@ the first run downloads Chromium. They cover every page in the XML sitemap:
   are installed;
 - consent: nothing is loaded from Google before consent, when consent is
   installed;
+- search: results in the drawer while typing, the search page, and both
+  without JavaScript, when search is installed;
 - content editor: can write an article, cannot reach site building pages;
 - accessibility: axe-core, WCAG 2.2 AA, on desktop and mobile viewports;
 - Lighthouse: accessibility, best practices and SEO must score 100.

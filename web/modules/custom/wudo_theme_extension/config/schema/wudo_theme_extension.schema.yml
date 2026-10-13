@@ -8,3 +8,14 @@ wudo_theme_extension.settings:
       sequence:
         type: string
         label: 'View ID'
+
+block.settings.wudo_search:
+  type: block_settings
+  label: 'Search button and drawer'
+  mapping:
+    drawer_id:
+      type: string
+      label: 'Drawer ID'
+    display_mode:
+      type: string
+      label: 'Display'

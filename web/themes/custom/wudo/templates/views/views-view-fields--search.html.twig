@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * One result of the search page.
+ *
+ * The title and address come from the found page itself, in the language it
+ * was found in; the excerpt comes from the search index.
+ */
+#}
+{% set entity = row._object.entity %}
+{% if entity %}
+  {% embed 'wudo:search-result' with {
+    title: entity.label,
+    url: path('entity.node.canonical', {node: entity.id}),
+    type: entity.type.entity.label,
+    excerpt_markup: fields.search_api_excerpt.content,
+  } only %}
+    {% block excerpt %}{{ excerpt_markup }}{% endblock %}
+  {% endembed %}
+{% endif %}

@@ -1,0 +1,33 @@
+name: Search Result
+description: "One search result: linked title, content type and an excerpt with the matches marked. Used on the search page; the search drawer builds the same markup."
+status: experimental
+group: Search
+
+props:
+  type: object
+  required:
+    - title
+    - url
+  properties:
+    title:
+      type: string
+      title: Title
+      examples:
+        - "Materials with a Sense of Place"
+    url:
+      type: string
+      title: URL
+      examples:
+        - "/article/materials-sense-place"
+    type:
+      type: string
+      title: Content type
+      examples:
+        - "Article"
+
+slots:
+  excerpt:
+    title: Excerpt
+    description: "Text around the matches; the matches are wrapped in strong."
+    examples:
+      - "… design often begins with an honest <strong>material</strong> …"

@@ -1,0 +1,48 @@
+wudo-search {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl, 1.5rem);
+}
+
+.search-form {
+  --search-form-border: var(--color-neutral-50, #9e9e9e);
+
+  // The base form styles stack fields in a column.
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--space-sm, 0.5rem);
+  max-width: none;
+  margin: 0;
+
+  &__input {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-sm, 0.5rem) var(--space-md, 0.75rem);
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid var(--search-form-border);
+    border-radius: var(--radius-sm, 5px);
+  }
+
+  // The icon-only button has no padding of its own.
+  .button#{&}__submit {
+    flex: none;
+    min-width: 2.75rem;
+    justify-content: center;
+  }
+}
+
+.search-status {
+  margin: 0;
+  font-size: var(--font-size-2xs, 0.875rem);
+
+  &:empty {
+    display: none;
+  }
+}
+
+.search-all {
+  align-self: flex-start;
+  font-weight: 600;
+}

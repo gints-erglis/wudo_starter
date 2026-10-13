@@ -57,6 +57,13 @@
 
   &__main-utils {
     order: 2;
+
+    // Several buttons (search, favorites) sit next to each other.
+    .region {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md, 0.75rem);
+    }
   }
 
   #{$root} &__menu-button {

@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.search_index
+label: 'Search index'
+description: 'What the search index reads of a page: its fields, without the page furniture.'
+targetEntityType: node
+cache: true

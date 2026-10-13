@@ -1,0 +1,32 @@
+name: Search Drawer
+description: "Search field in a drawer; the first results appear below it while typing, with a link to the search page for the rest. Outside Drupal there is no search API, so the preview finds nothing."
+status: experimental
+group: Search
+
+props:
+  type: object
+  properties:
+    drawer_id:
+      type: string
+      title: Drawer ID
+      description: "ID of the drawer; the search button uses the same one."
+      default: "search-drawer"
+    api_url:
+      type: string
+      title: API URL
+      description: "Address that answers ?q= with JSON: total, items (title, url, type, excerpt) and url of the search page."
+      default: "/api/search"
+    search_url:
+      type: string
+      title: Search page
+      description: "Where the form is sent when it is submitted, and without JavaScript."
+      default: "/search"
+    min_length:
+      type: integer
+      title: Shortest search
+      description: "Fewer characters than this are not searched for."
+      default: 2
+
+libraryOverrides:
+  dependencies:
+    - wudo/focus-trap

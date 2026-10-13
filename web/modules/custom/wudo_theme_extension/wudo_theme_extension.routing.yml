@@ -12,3 +12,10 @@ wudo_theme_extension.views_render:
     display_id: 'default'
   requirements:
     _permission: 'access content'
+
+wudo_theme_extension.search_api:
+  path: '/api/search'
+  defaults:
+    _controller: '\Drupal\wudo_theme_extension\Controller\SearchApiController::search'
+  requirements:
+    _permission: 'access content'

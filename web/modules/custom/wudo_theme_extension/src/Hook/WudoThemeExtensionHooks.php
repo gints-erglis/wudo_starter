@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\wudo_theme_extension\Hook;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\path_alias\AliasManagerInterface;
@@ -41,6 +42,28 @@ class WudoThemeExtensionHooks {
     foreach (array_filter($pages) as $path) {
       if ($this->aliasManager->getPathByAlias($path) === $link['loc']) {
         $link['access'] = FALSE;
+      }
+    }
+  }
+
+  /**
+   * Implements hook_search_api_index_items_alter().
+   *
+   * Keeps the error pages out of the search results.
+   */
+  #[Hook('search_api_index_items_alter')]
+  public function searchApiIndexItemsAlter(object $index, array &$items): void {
+    $pages = $this->configFactory->get('system.site')->get('page');
+    $paths = [];
+    foreach (['403', '404'] as $code) {
+      if (!empty($pages[$code])) {
+        $paths[] = $this->aliasManager->getPathByAlias($pages[$code]);
+      }
+    }
+    foreach ($items as $id => $item) {
+      $entity = $item->getOriginalObject()?->getValue();
+      if ($entity instanceof EntityInterface && in_array('/' . $entity->toUrl()->getInternalPath(), $paths, TRUE)) {
+        unset($items[$id]);
       }
     }
   }

@@ -1,0 +1,18 @@
+name: Search Button
+description: "Header button that opens the search drawer. Without JavaScript it is a link to the search page."
+status: experimental
+group: Search
+
+props:
+  type: object
+  properties:
+    drawer_id:
+      type: string
+      title: Drawer ID
+      description: "ID of the search drawer to open."
+      default: "search-drawer"
+    search_url:
+      type: string
+      title: Search page
+      description: "Address of the search page, used when the drawer is not available."
+      default: "/search"

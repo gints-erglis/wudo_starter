@@ -84,6 +84,10 @@ jobs:
           [ "$code" = "200" ]
       - name: Optional cookie consent with Google Analytics installs
         run: ddev add-consent G-TEST123456
+      - name: Optional search installs
+        run: |
+          ddev add-search
+          ddev exec curl -s "http://localhost/api/search?q=design" | tee /dev/stderr | grep -q '"total":[1-9]'
       - name: End-to-end, accessibility and Lighthouse tests
         run: ddev e2e
       - uses: actions/upload-artifact@v4

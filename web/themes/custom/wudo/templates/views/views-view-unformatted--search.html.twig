@@ -1,0 +1,11 @@
+{#
+/**
+ * @file
+ * The results of the search page, as a list.
+ */
+#}
+<ul class="search-results">
+  {% for row in rows %}
+    <li>{{ row.content }}</li>
+  {% endfor %}
+</ul>

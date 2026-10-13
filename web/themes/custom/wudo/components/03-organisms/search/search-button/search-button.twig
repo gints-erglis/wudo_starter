@@ -1,0 +1,13 @@
+{% set drawer_id = drawer_id|default('search-drawer') %}
+
+<span class="search-button">
+  {{ include('wudo:button', {
+    type: 'secondary',
+    url: search_url|default('/search'),
+    icon: 'search',
+    icon_only: true,
+    icon_size: 'large',
+    text: 'Search'|t,
+    attributes: create_attribute({'data-search-open': drawer_id}),
+  }, with_context = false) }}
+</span>

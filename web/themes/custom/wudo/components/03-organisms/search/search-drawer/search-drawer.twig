@@ -1,0 +1,51 @@
+{#
+Parameters:
+- drawer_id: must match the drawer_id of the search button
+- api_url: where the results come from (default: /api/search)
+- search_url: the search page (default: /search)
+- min_length: shortest text that is searched for (default: 2)
+#}
+
+{% set drawer_id = drawer_id|default('search-drawer') %}
+{% set min_length = min_length|default(2) %}
+{# The results reuse the styles of the search result component. #}
+{% set result_assets = include('wudo:search-result', {title: '', url: '/'}, with_context = false) %}
+
+{% embed 'wudo:drawer' with {
+  id: drawer_id,
+  position: 'right',
+  size: '480px',
+  title: 'Search'|t,
+  modifier_class: 'drawer--search',
+} %}
+  {% block content %}
+    <wudo-search
+      api-url="{{ api_url|default('/api/search') }}"
+      min-length="{{ min_length }}"
+      label-one="{{ '1 result'|t }}"
+      label-many="{{ '@count results'|t }}"
+      label-none="{{ 'Nothing found for “@keys”.'|t }}"
+      label-short="{{ 'Type at least @count characters.'|t({'@count': min_length}) }}"
+      label-loading="{{ 'Searching…'|t }}"
+      label-error="{{ 'The search did not answer. Try again.'|t }}"
+      label-all="{{ 'Show all @count results'|t }}"
+    >
+      <form class="search-form" role="search" action="{{ search_url|default('/search') }}" method="get">
+        <label class="visually-hidden" for="{{ drawer_id }}-input">{{ 'Search this site'|t }}</label>
+        <input class="search-form__input" type="search" id="{{ drawer_id }}-input" name="keys"
+          required minlength="{{ min_length }}" maxlength="128" autocomplete="off" spellcheck="false"
+          placeholder="{{ 'Search'|t }}">
+        {{ include('wudo:button', {
+          type: 'primary',
+          icon: 'search',
+          icon_only: true,
+          text: 'Search'|t,
+          attributes: create_attribute({'class': ['search-form__submit']}),
+        }, with_context = false) }}
+      </form>
+      <p class="search-status" role="status" aria-live="polite"></p>
+      <ul class="search-results" hidden></ul>
+      <a class="search-all" href="{{ search_url|default('/search') }}" hidden></a>
+    </wudo-search>
+  {% endblock %}
+{% endembed %}

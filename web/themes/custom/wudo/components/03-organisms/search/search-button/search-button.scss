@@ -1,0 +1,11 @@
+.search-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  .button {
+    padding: 0;
+    color: inherit;
+    background: transparent;
+  }
+}

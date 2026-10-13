@@ -1,0 +1,27 @@
+{#
+/**
+ * @file
+ * The search page (recipes/search): a plain search form above the results.
+ *
+ * The page brings its own heading, like landing pages do. Other lists wrap
+ * their exposed form in the filter bar; a single text field does not need it.
+ */
+#}
+<div{{ attributes.addClass('view', 'view--search') }}>
+  <h1 class="view__title">{{ view.title }}</h1>
+
+  {{ exposed }}
+
+  <div class="view__results">
+    {% if header %}
+      <p class="view__summary">{{ header }}</p>
+    {% endif %}
+
+    {% if rows -%}
+      {{ rows }}
+    {% elseif empty -%}
+      <div class="view__empty">{{ empty }}</div>
+    {% endif %}
+    {{ pager }}
+  </div>
+</div>

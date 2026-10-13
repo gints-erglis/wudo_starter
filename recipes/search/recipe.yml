@@ -1,0 +1,14 @@
+name: 'Search'
+description: 'Optional site search: a search button in the header that opens a drawer with results while typing, and a /search page. Uses the site''s own database; no extra service.'
+type: 'Site'
+
+install:
+  - node
+  - views
+  - search_api
+  - search_api_db
+
+config:
+  # Applying the recipe again must not fail on a site that has since been
+  # customised.
+  strict: false

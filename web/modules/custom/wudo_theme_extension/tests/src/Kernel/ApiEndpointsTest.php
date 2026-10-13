@@ -234,6 +234,13 @@ class ApiEndpointsTest extends KernelTestBase {
   }
 
   /**
+   * The search endpoint does not exist on a site without the search recipe.
+   */
+  public function testSearchWithoutSearch(): void {
+    $this->assertSame(404, $this->request('/api/search?q=alpha')->getStatusCode());
+  }
+
+  /**
    * Adds a view to the list served by /api/views.
    */
   protected function allowView(string $view_id): void {

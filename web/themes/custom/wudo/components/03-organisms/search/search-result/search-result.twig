@@ -1,0 +1,11 @@
+{% set excerpt_content %}{% block excerpt %}{% endblock %}{% endset %}
+
+<div class="search-result">
+  <a class="search-result__link" href="{{ url }}">{{ title }}</a>
+  {% if type %}
+    <span class="search-result__type">{{ type }}</span>
+  {% endif %}
+  {% if excerpt_content|trim %}
+    <p class="search-result__excerpt">{{ excerpt_content }}</p>
+  {% endif %}
+</div>

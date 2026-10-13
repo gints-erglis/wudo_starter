@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { declineConsent } from '../support/pages.js';
 
 const tags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 
@@ -8,6 +9,7 @@ test.beforeEach(async ({ page }) => {
   const response = await page.goto('/projects');
   test.skip(response.status() === 404, 'Projects are not installed.');
   test.skip(await page.locator('.project-card').count() === 0, 'No demo projects.');
+  await declineConsent(page);
 });
 
 test('the project list is filtered in place', async ({ page, isMobile }) => {

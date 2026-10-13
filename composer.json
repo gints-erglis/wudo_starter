@@ -30,6 +30,7 @@
         "drupal/paragraphs": "^1.23",
         "drupal/pathauto": "^1.15",
         "drupal/redirect": "^1.13",
+        "drupal/search_api": "^1.42",
         "drupal/seckit": "^2.0",
         "drupal/viewsreference": "^2.0@beta",
         "drupal/xmlsitemap": "^2.0",

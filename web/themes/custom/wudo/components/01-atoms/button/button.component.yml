@@ -46,6 +46,7 @@ props:
         - bookmark
         - globe
         - filter
+        - search
       examples:
         - 'right-arrow'
 

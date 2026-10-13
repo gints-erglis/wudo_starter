@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - wudo_theme_extension
+  theme:
+    - wudo
+id: wudo_search_drawer
+theme: wudo
+region: page_bottom
+weight: 1
+provider: null
+plugin: wudo_search
+settings:
+  id: wudo_search
+  label: 'Search drawer'
+  label_display: '0'
+  provider: wudo_theme_extension
+  drawer_id: search-drawer
+  display_mode: drawer
+visibility: {  }

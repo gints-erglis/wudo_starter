@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+## Description: Add the optional site search: a header button with a results drawer and a /search page
+## Usage: add-search
+## Example: "ddev add-search"
+
+set -euo pipefail
+
+if [ $# -gt 0 ]; then
+  echo "Unknown option: $1" >&2
+  exit 1
+fi
+
+cd "$DDEV_COMPOSER_ROOT"
+drush recipe ../recipes/search
+drush cache:rebuild
+# Existing content; from now on pages are indexed as they are saved.
+drush search-api:index
+drush cache:rebuild
+# Search API gives every view display a hidden "excerpt" field the next time
+# the display is saved. Saving them now puts that into the export, so a site
+# installed from it does not differ from it.
+drush php:eval 'foreach (\Drupal\Core\Entity\Entity\EntityViewDisplay::loadMultiple() as $display) { $display->save(); }'
+# Search is part of the site from now on, including fresh installs.
+drush config:export --yes

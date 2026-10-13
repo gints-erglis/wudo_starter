@@ -33,3 +33,16 @@ export function collectErrors(page) {
   });
   return errors;
 }
+
+/**
+ * Declines an unanswered consent notice (optional: ddev add-consent).
+ *
+ * The notice takes the keyboard focus when it appears, and covers part of a
+ * small screen, which gets in the way of tests about something else.
+ */
+export async function declineConsent(page) {
+  const decline = page.locator('#klaro .cookie-notice .cn-decline');
+  if (await decline.count()) {
+    await decline.click();
+  }
+}

@@ -6,9 +6,13 @@ namespace Drupal\wudo_theme_extension\Hook;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\path_alias\AliasManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Hook implementations for the Wudo Theme Extension module.
@@ -18,7 +22,47 @@ class WudoThemeExtensionHooks {
   public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
     private readonly AliasManagerInterface $aliasManager,
+    private readonly ThemeSettingsProvider $themeSettings,
+    private readonly RequestStack $requestStack,
   ) {}
+
+  /**
+   * Implements hook_token_info().
+   */
+  #[Hook('token_info')]
+  public function tokenInfo(): array {
+    return [
+      'tokens' => [
+        'site' => [
+          'logo-url' => [
+            'name' => new TranslatableMarkup('Logo URL'),
+            'description' => new TranslatableMarkup("The absolute URL of the active theme's logo."),
+          ],
+        ],
+      ],
+    ];
+  }
+
+  /**
+   * Implements hook_tokens().
+   *
+   * Gives the structured data (schema.org) of the site a logo that follows
+   * the logo of each site, see the theme's site/ folder.
+   */
+  #[Hook('tokens')]
+  public function tokens(string $type, array $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata): array {
+    $replacements = [];
+    if ($type !== 'site' || !isset($tokens['logo-url'])) {
+      return $replacements;
+    }
+    $url = (string) $this->themeSettings->getSetting('logo.url');
+    if ($url !== '' && !preg_match('#^[a-z][a-z0-9+.-]*://#i', $url)) {
+      $url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $url;
+    }
+    $bubbleable_metadata->addCacheContexts(['url.site', 'theme']);
+    $replacements[$tokens['logo-url']] = $url;
+    return $replacements;
+  }
 
   /**
    * Implements hook_field_widget_complete_WIDGET_TYPE_form_alter().

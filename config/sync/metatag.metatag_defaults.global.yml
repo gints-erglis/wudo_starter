@@ -13,3 +13,6 @@ tags:
   og_type: website
   og_title: '[current-page:title]'
   og_url: '[current-page:url]'
+  schema_web_page_type: WebPage
+  schema_web_page_id: '[current-page:url]#webpage'
+  schema_web_page_breadcrumb: 'Yes'

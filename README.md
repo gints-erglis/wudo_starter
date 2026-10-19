@@ -355,6 +355,20 @@ explicit host patterns before deploying to a shared or production environment.
 - `xmlsitemap` serves `/sitemap.xml` for all three content types; the error
   pages and the front page node are left out.
 - `redirect` keeps old URLs working when aliases change.
+- `schema_metatag` adds schema.org structured data (JSON-LD) that search
+  engines and AI assistants read: the site and its publisher on the front
+  page, a breadcrumb on every other page and the details of each article. The
+  publisher's logo is the theme logo (`[site:logo-url]`), so each site's own
+  `site/logo.svg` is used. Adjust at `/admin/config/search/metatag`.
+- `robotstxt` serves `/robots.txt` from configuration instead of a file, with
+  the address of the sitemap. Search and assistant crawlers that link back
+  (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, PerplexityBot and the like)
+  may crawl the site; crawlers that only collect training data (GPTBot,
+  ClaudeBot, Google-Extended, CCBot and others) are kept out. Edit the list at
+  `/admin/config/search/robotstxt`.
+- `llms_txt` serves `/llms.txt`, a Markdown summary of the site for AI
+  assistants ([llmstxt.org](https://llmstxt.org)): the site name and slogan,
+  the main menu and the sitemap. Edit it at `/admin/content/llms-txt`.
 - `csp` enforces a Content Security Policy that allows scripts from the site
   itself only. Inline scripts and inline event handlers (`onclick="…"`) are
   blocked, so attach behavior from JavaScript files. Embeds are allowed from
@@ -387,6 +401,8 @@ the first run downloads Chromium. They cover every page in the XML sitemap:
 - search: results in the drawer while typing, the search page, and both
   without JavaScript, when search is installed;
 - content editor: can write an article, cannot reach site building pages;
+- discovery: `robots.txt`, `llms.txt` and the structured data of the front
+  page and an article;
 - accessibility: axe-core, WCAG 2.2 AA, on desktop and mobile viewports;
 - Lighthouse: accessibility, best practices and SEO must score 100.
 

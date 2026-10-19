@@ -1,0 +1,12 @@
+_core:
+  default_config_hash: QAzM3yt6nFg0SkHtHbEDFZz0wk0_90cIPKc2nlhwNYI
+langcode: en
+content: |
+  # [site:name]
+
+  [site:slogan]
+
+  ## Main pages
+
+  [llms_txt_markdown_menu:main]
+  - [Sitemap]([site:url]sitemap.xml): every public page of the site

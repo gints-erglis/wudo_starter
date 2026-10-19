@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+## Description: Add AI helpers for editors: alt text for images and an AI assistant in the text editor
+## Usage: add-ai [provider]
+## Example: "ddev add-ai" or "ddev add-ai anthropic"
+
+set -euo pipefail
+
+provider=${1:-anthropic}
+if [ $# -gt 1 ] || [ "$provider" != anthropic ]; then
+  echo "Usage: ddev add-ai [anthropic]" >&2
+  exit 1
+fi
+
+cd "$DDEV_COMPOSER_ROOT"
+composer require drupal/ai drupal/key drupal/ai_image_alt_text "drupal/ai_provider_$provider"
+# Lets Drupal discover the modules that were just downloaded.
+drush cache:rebuild
+drush recipe "../recipes/ai_$provider"
+# The AI button at the end of the toolbar of both text formats. Done here
+# rather than in the recipe, so a toolbar the site has changed is kept.
+drush php:eval '
+foreach (["basic_html", "full_html"] as $id) {
+  $editor = \Drupal\editor\Entity\Editor::load($id);
+  if (!$editor) {
+    continue;
+  }
+  $settings = $editor->getSettings();
+  if (!in_array("aickeditor", $settings["toolbar"]["items"], TRUE)) {
+    array_push($settings["toolbar"]["items"], "|", "aickeditor");
+  }
+  // An empty provider means the default chat model at Configuration → AI.
+  $plugin = ["enabled" => TRUE, "provider" => ""];
+  $settings["plugins"]["ai_ckeditor_ai"] = [
+    "dialog" => [
+      "autoresize" => "min-width: 600px",
+      "height" => "750",
+      "width" => "900",
+      "dialog_class" => "ai-ckeditor-modal",
+    ],
+    "plugins" => [
+      "ai_ckeditor_completion" => $plugin,
+      "ai_ckeditor_modify_prompt" => $plugin,
+      "ai_ckeditor_spellfix" => $plugin,
+      "ai_ckeditor_summarize" => $plugin,
+      "ai_ckeditor_translate" => $plugin + ["language_source" => "lang", "autocreate" => FALSE, "translate_vocabulary" => "", "use_description" => FALSE],
+    ],
+  ];
+  $editor->setSettings($settings)->save();
+}'
+# A "Generate" button for the description (meta description) of every content
+# type that has a body to write it from.
+drush php:eval '
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+
+$default = \Drupal::config("ai.settings")->get("default_providers.chat");
+$prompt = "Write the meta description of a web page from its text below.\n"
+  . "- One or two sentences, 120 to 155 characters.\n"
+  . "- The same language as the text.\n"
+  . "- Say what the reader finds on the page; no quotes, no hype, no emoji.\n"
+  . "- Only respond with the description and nothing else.\n\n"
+  . "Text:\n{{ context }}";
+$storage = \Drupal::entityTypeManager()->getStorage("ai_automator");
+foreach (array_keys(\Drupal::entityTypeManager()->getStorage("node_type")->loadMultiple()) as $bundle) {
+  $fields = \Drupal::service("entity_field.manager")->getFieldDefinitions("node", $bundle);
+  $display = EntityFormDisplay::load("node.$bundle.default");
+  $component = $display?->getComponent("field_description");
+  if (!isset($fields["field_body"]) || !$component) {
+    continue;
+  }
+  $id = "node.$bundle.field_description.default";
+  $automator = $storage->load($id) ?? $storage->create(["id" => $id]);
+  $values = [
+    "label" => "Description",
+    "rule" => "llm_simple_string_long",
+    "input_mode" => "base",
+    "weight" => 100,
+    "worker_type" => "field_widget_actions",
+    "entity_type" => "node",
+    "bundle" => $bundle,
+    "field_name" => "field_description",
+    "edit_mode" => FALSE,
+    "base_field" => "field_body",
+    "prompt" => $prompt,
+    "token" => "",
+  ];
+  foreach ($values as $key => $value) {
+    $automator->set($key, $value);
+  }
+  $automator->set("plugin_config", [
+    "automator_enabled" => 1,
+    "automator_rule" => $values["rule"],
+    "automator_mode" => $values["input_mode"],
+    "automator_base_field" => $values["base_field"],
+    "automator_prompt" => $prompt,
+    "automator_token" => "",
+    "automator_edit_mode" => 0,
+    "automator_label" => $values["label"],
+    "automator_weight" => "100",
+    "automator_worker_type" => $values["worker_type"],
+    "automator_ai_provider" => $default["provider_id"],
+    "automator_ai_model" => $default["model_id"],
+  ])->save();
+  // The module keys the actions by UUID; one button per automator.
+  $actions = $component["third_party_settings"]["field_widget_actions"] ?? [];
+  if (in_array($id, array_column(array_column($actions, "settings"), "automator_id"), TRUE)) {
+    continue;
+  }
+  $component["third_party_settings"]["field_widget_actions"][\Drupal::service("uuid")->generate()] = [
+    "plugin_id" => "automator_text",
+    "enabled" => TRUE,
+    "button_label" => "Generate",
+    "weight" => 0,
+    "settings" => ["automator_id" => $id],
+  ];
+  $display->setComponent("field_description", $component)->save();
+}'
+drush cache:rebuild
+# AI is part of the site from now on, including fresh installs.
+drush config:export --yes
+
+if [ -z "${AI_API_KEY:-}" ]; then
+  echo
+  echo "Add the API key to .ddev/.env and restart:"
+  echo "  echo 'AI_API_KEY=...' >> .ddev/.env && ddev restart"
+fi

@@ -1,0 +1,26 @@
+name: 'AI tools with Anthropic'
+description: 'The AI tools, answered by Anthropic Claude.'
+type: 'Site'
+
+recipes:
+  - ai
+
+install:
+  - ai_provider_anthropic
+
+config:
+  strict: false
+  actions:
+    ai_provider_anthropic.settings:
+      simpleConfigUpdate:
+        api_key: ai_api_key
+        # Moderation through OpenAI needs an OpenAI account as well.
+        openai_moderation: false
+    ai.settings:
+      simpleConfigUpdate:
+        default_providers.chat:
+          provider_id: anthropic
+          model_id: claude-sonnet-5-5
+        default_providers.chat_with_image_vision:
+          provider_id: anthropic
+          model_id: claude-sonnet-5-5

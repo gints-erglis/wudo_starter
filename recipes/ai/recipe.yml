@@ -1,0 +1,31 @@
+name: 'AI tools'
+description: 'AI helpers for editors: alt text for images, page descriptions and an AI assistant in the text editor. Needs a provider recipe (ai_anthropic) and an API key in the AI_API_KEY environment variable.'
+type: 'Site'
+
+install:
+  - key
+  - ai
+  - ai_ckeditor
+  - ai_image_alt_text
+  - ai_image_bulk_alt_text
+  - ai_automators
+  - field_widget_actions
+
+config:
+  strict: false
+  # The prompts of the editor assistant and the image style the alt text is
+  # generated from.
+  import:
+    ai_ckeditor: '*'
+    ai_image_alt_text: '*'
+  actions:
+    ai_image_alt_text.settings:
+      simpleConfigUpdate:
+        # The editor asks for the alt text and checks it before saving.
+        autogenerate: false
+        hide_button: false
+    user.role.content_editor:
+      grantPermissions:
+        - 'use ai ckeditor'
+        - 'generate ai alt tags'
+        - 'batch fix ai images alt text'

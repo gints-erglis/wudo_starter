@@ -275,6 +275,44 @@ the page stay as they are, because they only know the index.
 After restoring a backup the index comes with the database. Should it ever be
 out of step: `ddev drush search-api:rebuild-tracker && ddev drush search-api:index`.
 
+## Adding AI tools
+
+AI helpers for editors are optional too. Visitors see nothing of them.
+
+```bash
+ddev add-ai
+echo 'AI_API_KEY=sk-ant-...' >> .ddev/.env
+ddev restart
+```
+
+The answers come from Anthropic Claude (`claude-sonnet-5-5`); create a key at
+[console.anthropic.com](https://console.anthropic.com/settings/keys). On a
+production server the key goes into the server's `.ddev/.env` as well
+(`deploy/env.example`). The key is read from the environment by the Key
+module and is never stored in the database or in `config/sync`.
+
+- **Alt text.** Next to the alternative text of an uploaded image there is a
+  "Generate" button. The text is written in the language of the page, and
+  the editor checks it before saving. Images that are already on the site
+  get theirs at `/admin/config/media/ai_image_bulk_alt_text`.
+- **Description.** The description of a page (its meta description in
+  search results) gets a "Generate" button that writes one from the body
+  text: 120–155 characters, in the language of the text. It is added to every
+  content type with a body (articles, galleries, and projects when they are
+  installed first); run `ddev add-ai` again after adding projects later.
+- **Text editor.** The "AI Assistant" button at the end of the toolbar
+  completes, rewrites the selected text by an instruction, fixes spelling,
+  summarizes or translates. The result is shown first; the editor
+  inserts it or not.
+
+Content editors may use both. The model and the prompts can be changed at
+`/admin/config/ai`. Without a key the site works as before; the buttons
+report an error and the reason is logged ("Could not load the Anthropic API
+key").
+
+What editors send to the AI goes to Anthropic. A site with personal data in
+its content needs a data processing agreement with Anthropic first.
+
 ## Adding cookie consent
 
 A consent notice is optional; a site that sets no cookies beyond its own and
@@ -401,6 +439,9 @@ the first run downloads Chromium. They cover every page in the XML sitemap:
 - search: results in the drawer while typing, the search page, and both
   without JavaScript, when search is installed;
 - content editor: can write an article, cannot reach site building pages;
+- AI tools: the assistant in the text editor, the description and the alt
+  text buttons, when
+  AI is installed (no requests to the AI provider are made);
 - discovery: `robots.txt`, `llms.txt` and the structured data of the front
   page and an article;
 - accessibility: axe-core, WCAG 2.2 AA, on desktop and mobile viewports;

@@ -88,6 +88,8 @@ jobs:
         run: |
           ddev add-search
           ddev exec curl -s "http://localhost/api/search?q=design" | tee /dev/stderr | grep -q '"total":[1-9]'
+      - name: Optional AI tools install
+        run: ddev add-ai
       - name: End-to-end, accessibility and Lighthouse tests
         run: ddev e2e
       - uses: actions/upload-artifact@v4

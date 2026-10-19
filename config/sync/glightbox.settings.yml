@@ -34,8 +34,8 @@ plyr:
   autoplay: false
   autopause: true
   playsinline: true
-  seek_time: '10'
-  volume: '1'
+  seek_time: 10
+  volume: 1
   muted: false
   click_to_play: true
   disable_context_menu: true

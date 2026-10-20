@@ -1,0 +1,51 @@
+'$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
+
+name: Table of contents
+description: "Links to the headings of a page. Marks the section being read when JavaScript is available."
+status: experimental
+group: Navigation
+
+props:
+  type: object
+  properties:
+    items:
+      type: array
+      title: Headings
+      description: "The h2 and h3 headings of the page: id, text and level."
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          text:
+            type: string
+          level:
+            type: integer
+            enum: [2, 3]
+      examples:
+        -
+          - id: warm-tones
+            text: Warm tones
+            level: 2
+          - id: forest-greens
+            text: Forest greens
+            level: 3
+          - id: small-details
+            text: Small details
+            level: 2
+    title:
+      type: string
+      title: Title
+      default: Contents
+    collapsible:
+      type: boolean
+      title: Collapsible
+      description: "Closed until opened, for small screens."
+      default: false
+    modifier_class:
+      type: string
+      title: Modifier class
+
+libraryOverrides:
+  js:
+    toc.js: { attributes: { type: module } }

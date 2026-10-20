@@ -2,6 +2,12 @@
   font-size: 100%;
   text-size-adjust: 100%;
   min-height: 100%;
+
+  // Links to a place on the page (contents, skip link) glide there, unless
+  // the visitor asked the system for less motion.
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
 }
 
 body {

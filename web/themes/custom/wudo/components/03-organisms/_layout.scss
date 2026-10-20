@@ -15,6 +15,43 @@
   padding: 0 var(--page-indention);
 }
 
+// The second sidebar (table of contents, ads) next to the content on wide
+// screens, below it on small ones.
+.page-wrapper--with-sidebar {
+  @include breakpoint.s {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--sidebar-width);
+    column-gap: var(--space-3xl);
+    align-items: start;
+
+    > #main-content {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.layout-sidebar-second {
+  display: grid;
+  gap: var(--space-2xl);
+  padding-bottom: var(--space-3xl);
+
+  @include breakpoint.s {
+    position: sticky;
+    top: var(--space-xl);
+  }
+
+  // Small screens have the table of contents at the top of the article.
+  @media (width < breakpoint.$breakpoint-s) {
+    .block-wudo-table-of-contents {
+      display: none;
+    }
+
+    &:not(:has(.block:not(.block-wudo-table-of-contents))) {
+      padding-bottom: 0;
+    }
+  }
+}
+
 .layout-grid-2,
 .grid-2 {
   @include layout-grid(2);

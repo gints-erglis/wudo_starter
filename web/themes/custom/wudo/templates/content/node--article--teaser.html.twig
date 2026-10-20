@@ -53,8 +53,11 @@
  * - title_suffix: Additional output populated by modules, intended to be
  *   displayed after the main title tag that appears in the template.
  * - view_mode: View mode; for example, "teaser" or "full".
+ * - summary_fallback: The start of the body as plain text, for an article
+ *   without a description.
  *
  * @see \Drupal\node\Hook\NodeThemeHooks::preprocessNode()
+ * @see wudo_preprocess_node()
  *
  * @ingroup themeable
  */
@@ -65,7 +68,7 @@
   card_meta: createdDate,
   title: label,
   title_url: url,
-  summary: content.field_body|default(''),
+  summary: content.field_description|render|trim ? content.field_description : summary_fallback|default(''),
   with_image: node.field_image is defined and not node.field_image.isEmpty(),
   favorite_content_id: node.id(),
   favorite_label: label,

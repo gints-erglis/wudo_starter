@@ -1,0 +1,28 @@
+uuid: 42c3f64b-c974-4e91-ac5d-4591932081d0
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - wudo_theme_extension
+  theme:
+    - wudo
+id: wudo_table_of_contents
+theme: wudo
+region: sidebar_second
+weight: 0
+provider: null
+plugin: wudo_table_of_contents
+settings:
+  id: wudo_table_of_contents
+  label: 'Table of contents'
+  label_display: '0'
+  provider: wudo_theme_extension
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      article: article

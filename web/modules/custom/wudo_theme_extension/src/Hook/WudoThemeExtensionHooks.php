@@ -10,8 +10,10 @@ use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\StringTranslation\PluralTranslatableMarkup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\path_alias\AliasManagerInterface;
+use Drupal\wudo_theme_extension\TableOfContents;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -72,6 +74,46 @@ class WudoThemeExtensionHooks {
   #[Hook('field_widget_complete_paragraphs_form_alter')]
   public function paragraphsWidgetAlter(array &$field_widget_complete_form, FormStateInterface $form_state, array $context): void {
     $field_widget_complete_form['#attached']['library'][] = 'wudo_theme_extension/paragraph_behavior';
+  }
+
+  /**
+   * Implements hook_preprocess_HOOK() for field templates.
+   *
+   * Gives the headings of a node's body an id for the table of contents.
+   */
+  #[Hook('preprocess_field')]
+  public function preprocessField(array &$variables): void {
+    if ($variables['entity_type'] !== 'node' || $variables['field_name'] !== TableOfContents::FIELD) {
+      return;
+    }
+    foreach ($variables['items'] as &$item) {
+      $item['content']['#post_render'][] = [TableOfContents::class, 'addIds'];
+    }
+  }
+
+  /**
+   * Implements hook_preprocess_HOOK() for node templates.
+   *
+   * Gives full pages the headings of their body ("toc", for small screens;
+   * the "Table of contents" block shows them in a sidebar) and the minutes it
+   * takes to read the body ("reading_time").
+   */
+  #[Hook('preprocess_node')]
+  public function preprocessNode(array &$variables): void {
+    $node = $variables['node'];
+    if ($variables['view_mode'] !== 'full' || !$node->hasField(TableOfContents::FIELD)) {
+      return;
+    }
+    $items = TableOfContents::forNode($node);
+    if (count($items) >= TableOfContents::MINIMUM) {
+      $variables['toc'] = $items;
+    }
+    $text = strip_tags((string) $node->get(TableOfContents::FIELD)->value);
+    $words = count(preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY));
+    if ($words > 0) {
+      // About 200 words a minute.
+      $variables['reading_time'] = new PluralTranslatableMarkup((int) ceil($words / 200), '1 min read', '@count min read');
+    }
   }
 
   /**

@@ -86,7 +86,8 @@
         </div>
       </div>
     {% endif %}
-    <div class="page-wrapper">
+    {% set with_sidebar = page.sidebar_second %}
+    <div class="page-wrapper{{ with_sidebar ? ' page-wrapper--with-sidebar' }}">
       <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
 
       <div class="layout-content">

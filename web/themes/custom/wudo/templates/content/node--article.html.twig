@@ -54,21 +54,54 @@
  *   displayed after the main title tag that appears in the template.
  * - view_mode: View mode; for example, "teaser" or "full".
  *
+ * - toc: (full view) the h2 and h3 headings of the body, for small screens.
+ * - reading_time: (full view) "3 min read".
+ *
  * @see \Drupal\node\Hook\NodeThemeHooks::preprocessNode()
+ * @see \Drupal\wudo_theme_extension\Hook\WudoThemeExtensionHooks::preprocessNode()
  *
  * @ingroup themeable
  */
 #}
-<article{{ attributes }}>
+{% set image = content.field_image|render|trim %}
+
+<article{{ attributes.addClass('article') }}>
   {{ title_prefix }}
   {{ title_suffix }}
 
-  {{ include('wudo:favorite-button', {
-    content_id: node.id(),
-    label: label,
-  }, with_context = false) }}
+  <div class="article__meta">
+    <time class="article__date" datetime="{{ node.getCreatedTime|date('c') }}">
+      {{- node.getCreatedTime|format_date('custom', 'j F Y') -}}
+    </time>
+    {% if reading_time %}
+      <span class="article__reading-time">{{ reading_time }}</span>
+    {% endif %}
+    <div class="article__favorite">
+      {{ include('wudo:favorite-button', {
+        content_id: node.id(),
+        label: node.label(),
+        icon_type: 'bookmark',
+        icon_size: 'regular',
+      }, with_context = false) }}
+    </div>
+  </div>
 
-  <div{{ content_attributes }}>
-    {{ content }}
+  {% if image %}
+    <div class="article__image">
+      {{ content.field_image }}
+    </div>
+  {% endif %}
+
+  {% if toc %}
+    <div class="article__toc">
+      {{ include('wudo:toc', {
+        items: toc,
+        collapsible: true,
+      }, with_context = false) }}
+    </div>
+  {% endif %}
+
+  <div{{ content_attributes.addClass('article__body') }}>
+    {{ content|without('field_image') }}
   </div>
 </article>

@@ -1,0 +1,63 @@
+@use "../../00-base/00-defaults/_02-breakpoints.scss" as breakpoint;
+
+// Article page: date, reading time and favorite, main image, body. The text
+// keeps a readable line length whether or not there is a sidebar.
+.article {
+  display: grid;
+  gap: var(--space-xl);
+  max-width: 42rem;
+  padding-bottom: var(--space-4xl);
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm) var(--space-lg);
+    color: var(--color-neutral-70);
+    font-size: var(--font-size-2xs);
+  }
+
+  &__reading-time::before {
+    content: "·";
+    margin-right: var(--space-lg);
+  }
+
+  &__favorite {
+    margin-left: auto;
+
+    // As on the article cards.
+    .wudo-fav-inner-button {
+      padding: 0.3em;
+    }
+  }
+
+  &__image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-xs);
+  }
+
+  &__body {
+    p + p {
+      margin-top: 1em;
+    }
+
+    h2,
+    h3 {
+      // Clear of the sticky header when reached through the contents.
+      scroll-margin-top: var(--space-5xl);
+    }
+  }
+
+  // The sidebar has the table of contents on wide screens.
+  .page-wrapper--with-sidebar &__toc {
+    @include breakpoint.s {
+      display: none;
+    }
+  }
+}
+
+[data-theme="dark"] .article__meta {
+  color: var(--color-neutral-30);
+}

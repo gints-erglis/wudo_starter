@@ -9,18 +9,16 @@ dependencies:
     - field.field.node.article.field_image
     - node.type.article
   module:
-    - text
     - user
 id: node.article.teaser
 targetEntityType: node
 bundle: article
 mode: teaser
 content:
-  field_body:
-    type: text_trimmed
+  field_description:
+    type: basic_string
     label: hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
     weight: 101
     region: content
@@ -39,5 +37,5 @@ content:
     weight: 100
     region: content
 hidden:
-  field_description: true
+  field_body: true
   langcode: true

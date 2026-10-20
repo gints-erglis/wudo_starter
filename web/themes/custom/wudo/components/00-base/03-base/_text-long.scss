@@ -12,8 +12,9 @@
     letter-spacing: -0.02em;
   }
 
+  // Each level a step smaller than the one above, on every screen.
   h3 {
-    font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.45rem);
+    font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
     line-height: 1.3;
     font-weight: 600;
     margin-top: 1em;
@@ -21,7 +22,7 @@
   }
 
   h4 {
-    font-size: 1.15rem;
+    font-size: 1.0625rem;
     line-height: 1.35;
     font-weight: 600;
     margin-top: 1em;

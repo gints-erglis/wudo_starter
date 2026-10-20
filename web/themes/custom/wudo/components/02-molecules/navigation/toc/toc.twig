@@ -1,0 +1,33 @@
+{#
+Properties:
+- items: the headings, each with an id, a text and a level (2 or 3)
+- title: (optional) the heading of the list, "Contents" by default
+- collapsible: (optional) closed until opened, for small screens
+- modifier_class: (optional) additional CSS class
+#}
+{% if items %}
+  {% set title = title|default('Contents'|t) %}
+  {% set list %}
+    <ol class="toc__list">
+      {% for item in items %}
+        <li class="toc__item toc__item--level-{{ item.level }}">
+          <a class="toc__link" href="#{{ item.id }}">{{ item.text }}</a>
+        </li>
+      {% endfor %}
+    </ol>
+  {% endset %}
+
+  <wudo-toc>
+    <nav {{ attributes.addClass('toc', collapsible ? 'toc--collapsible', modifier_class).setAttribute('aria-label', title) }}>
+      {% if collapsible %}
+        <details class="toc__details">
+          <summary class="toc__title">{{ title }}</summary>
+          {{ list }}
+        </details>
+      {% else %}
+        <h2 class="toc__title">{{ title }}</h2>
+        {{ list }}
+      {% endif %}
+    </nav>
+  </wudo-toc>
+{% endif %}

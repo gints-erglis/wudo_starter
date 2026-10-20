@@ -145,6 +145,30 @@ addresses and RSS feeds; anything else gets a globe. To add a network, put its
 icon in the theme's `assets/icons` and its domain in
 `wudo_preprocess_menu__social()` in `wudo.theme`.
 
+## Article pages
+
+In lists an article card shows the description of the article, or, without
+one, the start of the paragraphs of its body as plain text; either way at
+most three lines, so the cards line up.
+
+An article shows its date, the time it takes to read (about 200 words a
+minute) and the favorite button above the main image, and keeps its text to
+a readable line length of about 75 characters.
+
+The h2 and h3 headings of the body make a table of contents once there are
+two or more. The headings get an id (from their text, or the one set in the
+editor's source view), so a section can be linked to: `/article/…#warm-tones`.
+On wide screens the contents are in a sidebar and mark the section being
+read; on small screens they are a "Contents" list to open at the top of the
+article.
+
+The sidebar is the "Sidebar second" region. The table of contents is a block
+in it, shown on articles only; anything else placed there at Structure →
+Block layout (an ad, a newsletter sign-up) appears under it, on any page the
+block is shown on, and below the content on small screens. The sidebar is
+25rem wide (`--sidebar-width`), which fits the common 300 px ad sizes. A page
+whose sidebar has nothing to show is laid out in one column.
+
 ## Adding a language
 
 The starter ships with one language, English. To make the site multilingual,
@@ -438,6 +462,8 @@ the first run downloads Chromium. They cover every page in the XML sitemap:
   installed;
 - search: results in the drawer while typing, the search page, and both
   without JavaScript, when search is installed;
+- article page: date, reading time, line length, and the table of contents
+  in the sidebar and on small screens;
 - content editor: can write an article, cannot reach site building pages;
 - AI tools: the assistant in the text editor, the description and the alt
   text buttons, when

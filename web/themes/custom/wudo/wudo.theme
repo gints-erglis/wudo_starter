@@ -5,6 +5,8 @@
  * Page related functions to support theming.
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -210,6 +212,18 @@ function wudo_preprocess_menu__social(array &$variables): void {
 function wudo_preprocess_node(array &$variables): void {
   /** @var \Drupal\node\NodeInterface $node */
   $node = $variables['node'];
+
+  // A card shows the description; one without it shows the start of the
+  // paragraphs of the body, as plain text, without headings or lists.
+  if ($variables['view_mode'] === 'teaser' && $node->hasField('field_body') && !$node->get('field_body')->isEmpty()) {
+    $paragraphs = [];
+    foreach (Html::load((string) $node->get('field_body')->value)->getElementsByTagName('p') as $paragraph) {
+      $paragraphs[] = $paragraph->textContent;
+    }
+    $text = trim(preg_replace('/\s+/u', ' ', implode(' ', $paragraphs)));
+    $variables['summary_fallback'] = Unicode::truncate($text, 200, TRUE, TRUE);
+  }
+
   if ($node->bundle() !== 'project') {
     return;
   }

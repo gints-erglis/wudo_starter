@@ -35,7 +35,7 @@ default:
       pathauto: 0
   field_body:
     -
-      value: "<p>Nature’s palette transforms the world around us. Discover warm tones, changing landscapes and simple ways to bring the feeling of autumn into everyday spaces.</p><p>Nature's palette transforms the world around us. Discover warm tones, changing landscapes and simple ways to bring the feeling of autumn into everyday spaces. From deep forest greens and muted ochres to soft rust and golden amber, the colours of the season create a sense of warmth, calm and quiet connection with nature.</p><p>Explore the small details that make autumn special - leaves scattered along a woodland path, soft afternoon light through the trees, and the comforting textures of wool, wood and natural linen. Find inspiration for creating spaces that feel warm and inviting, while embracing the slower rhythm and understated beauty of the season.</p>"
+      value: "<p>Nature’s palette transforms the world around us. Discover warm tones, changing landscapes and simple ways to bring the feeling of autumn into everyday spaces.</p><h2>Warm tones</h2><p>From deep forest greens and muted ochres to soft rust and golden amber, the colours of the season create a sense of warmth, calm and quiet connection with nature.</p><h2>Small details</h2><p>Explore the small details that make autumn special - leaves scattered along a woodland path, and soft afternoon light through the trees.</p><h3>Textures at home</h3><p>Bring in the comforting textures of wool, wood and natural linen. Find inspiration for creating spaces that feel warm and inviting, while embracing the slower rhythm and understated beauty of the season.</p>"
       format: basic_html
   field_description:
     -

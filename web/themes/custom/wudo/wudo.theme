@@ -5,12 +5,14 @@
  * Page related functions to support theming.
  */
 
+use Drupal\block_content\BlockContentInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\csp\Csp;
+use Drupal\link\LinkItemInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -203,11 +205,30 @@ function wudo_preprocess_menu__social(array &$variables): void {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for blocks.
+ *
+ * Gives a banner the address of its link.
+ */
+function wudo_preprocess_block(array &$variables): void {
+  $block = $variables['content']['#block_content'] ?? NULL;
+  if (!$block instanceof BlockContentInterface || $block->bundle() !== 'banner') {
+    return;
+  }
+  $link = $block->get('field_banner_link')->first();
+  if ($link instanceof LinkItemInterface) {
+    $url = $link->getUrl();
+    $variables['banner_url'] = $url->toString();
+    $variables['banner_external'] = $url->isExternal();
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK() for nodes.
  *
- * Prepares the facts list of a project: every field shown in "Manage display",
- * apart from the ones the template places itself, becomes a row labelled with
- * the name of the field.
+ * Gives cards the start of the body for when there is no description, and
+ * prepares the facts list of a project: every field shown in "Manage
+ * display", apart from the ones the template places itself, becomes a row
+ * labelled with the name of the field.
  */
 function wudo_preprocess_node(array &$variables): void {
   /** @var \Drupal\node\NodeInterface $node */

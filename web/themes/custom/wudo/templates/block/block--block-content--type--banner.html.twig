@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * A banner: its image, as a link when it has one.
+ *
+ * Available variables, in addition to the ones of block.html.twig:
+ * - banner_url: Where the banner leads, if anywhere.
+ * - banner_external: Whether that is another site; the link is then marked
+ *   as sponsored, as search engines expect of ads.
+ *
+ * @see wudo_preprocess_block()
+ */
+#}
+{% extends 'block.html.twig' %}
+
+{% block content %}
+  <div{{ content_attributes.addClass('block__content', 'banner') }}>
+    {% if banner_url %}
+      <a class="banner__link" href="{{ banner_url }}"{% if banner_external %} rel="sponsored noopener"{% endif %}>
+        {{ content.field_banner_image }}
+      </a>
+    {% else %}
+      {{ content.field_banner_image }}
+    {% endif %}
+  </div>
+{% endblock %}

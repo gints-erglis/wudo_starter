@@ -1,0 +1,23 @@
+// A banner block (block type "Banner"): its image, as large as its column.
+.banner {
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+  }
+
+  &__link {
+    display: block;
+    border-radius: var(--radius-sm);
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    &:focus-visible {
+      outline-offset: 4px;
+    }
+  }
+}

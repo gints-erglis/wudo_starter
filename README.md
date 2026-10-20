@@ -169,6 +169,15 @@ block is shown on, and below the content on small screens. The sidebar is
 25rem wide (`--sidebar-width`), which fits the common 300 px ad sizes. A page
 whose sidebar has nothing to show is laid out in one column.
 
+For an image that links somewhere (an ad, a campaign, a newsletter) there is
+the "Banner" block type: an image from the media library and a link.
+Content editors make them at Content → Blocks → Add content block; an
+administrator places one in "Sidebar second" at Structure → Block layout,
+with "Content type: Article" under Visibility to keep it to articles. The
+whole image is the link, and a link to another site is marked
+`rel="sponsored"`, as search engines expect of ads. Upload the image 800 px
+wide for sharp screens.
+
 ## Adding a language
 
 The starter ships with one language, English. To make the site multilingual,
@@ -462,8 +471,9 @@ the first run downloads Chromium. They cover every page in the XML sitemap:
   installed;
 - search: results in the drawer while typing, the search page, and both
   without JavaScript, when search is installed;
-- article page: date, reading time, line length, and the table of contents
-  in the sidebar and on small screens;
+- article page: date, reading time, line length, the table of contents in
+  the sidebar and on small screens, and a banner beside or below the
+  article;
 - content editor: can write an article, cannot reach site building pages;
 - AI tools: the assistant in the text editor, the description and the alt
   text buttons, when

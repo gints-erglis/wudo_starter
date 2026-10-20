@@ -16,7 +16,12 @@ test.describe('AI helpers', () => {
   test.skip(!existsSync(drushPath), 'Drush is not available.');
   test.skip(existsSync(drushPath) && !drush('pm:list', '--status=enabled', '--field=name').split('\n').includes('ai_ckeditor'), 'AI is not installed.');
 
-  test.beforeAll(() => {
+  // The hooks run in every project, also where the tests are skipped; two
+  // projects creating the same account at once would collide.
+  test.beforeAll(({}, testInfo) => {
+    if (testInfo.project.use.isMobile) {
+      return;
+    }
     try {
       execFileSync(drushPath, ['user:cancel', '--delete-content', name, '--yes'], { stdio: 'ignore' });
     }
@@ -27,7 +32,10 @@ test.describe('AI helpers', () => {
     drush('user:role:add', 'content_editor', name);
   });
 
-  test.afterAll(() => {
+  test.afterAll(({}, testInfo) => {
+    if (testInfo.project.use.isMobile) {
+      return;
+    }
     drush('user:cancel', '--delete-content', name, '--yes');
   });
 

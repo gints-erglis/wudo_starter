@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block_content.type.banner
     - block_content.type.basic
     - filter.format.basic_html
     - filter.format.full_html
@@ -42,6 +43,7 @@ permissions:
   - 'administer redirects'
   - 'administer url aliases'
   - 'create article content'
+  - 'create banner block content'
   - 'create basic block content'
   - 'create gallery content'
   - 'create landingpage content'
@@ -49,12 +51,14 @@ permissions:
   - 'create terms in tags'
   - 'create url aliases'
   - 'delete any article content'
+  - 'delete any banner block content'
   - 'delete any gallery content'
   - 'delete any landingpage content'
   - 'delete any media'
   - 'delete own files'
   - 'delete terms in tags'
   - 'edit any article content'
+  - 'edit any banner block content'
   - 'edit any basic block content'
   - 'edit any gallery content'
   - 'edit any landingpage content'

@@ -1,0 +1,23 @@
+uuid: 01a83f71-2d6e-49cb-ad97-953420e4c6a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.banner
+    - field.storage.block_content.field_banner_link
+  module:
+    - link
+id: block_content.banner.field_banner_link
+field_name: field_banner_link
+entity_type: block_content
+bundle: banner
+label: Link
+description: 'Where the banner leads: a page of the site (start typing its title) or an address such as https://example.com.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 0
+  link_type: 17
+field_type: link

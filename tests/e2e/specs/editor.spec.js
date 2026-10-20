@@ -13,7 +13,12 @@ test.describe('content editor', () => {
   test.skip(({ isMobile }) => isMobile, 'The admin UI is checked once.');
   test.skip(!existsSync(drushPath), 'Drush is not available.');
 
-  test.beforeAll(() => {
+  // The hooks run in every project, also where the tests are skipped; two
+  // projects creating the same account at once would collide.
+  test.beforeAll(({}, testInfo) => {
+    if (testInfo.project.use.isMobile) {
+      return;
+    }
     try {
       execFileSync(drushPath, ['user:cancel', '--delete-content', name, '--yes'], { stdio: 'ignore' });
     }
@@ -24,7 +29,10 @@ test.describe('content editor', () => {
     drush('user:role:add', 'content_editor', name);
   });
 
-  test.afterAll(() => {
+  test.afterAll(({}, testInfo) => {
+    if (testInfo.project.use.isMobile) {
+      return;
+    }
     drush('user:cancel', '--delete-content', name, '--yes');
   });
 
@@ -43,7 +51,7 @@ test.describe('content editor', () => {
     await expect(page).toHaveURL(/\/article\/written-e2e-editor$/);
 
     // Pages of the job are open...
-    for (const path of ['/admin/content', '/admin/content/media', '/media/add/image', '/node/add/landingpage', '/node/add/gallery', '/admin/structure/menu/manage/main', '/admin/structure/taxonomy/manage/tags/add', '/admin/config/search/redirect']) {
+    for (const path of ['/admin/content', '/admin/content/media', '/media/add/image', '/block/add/banner', '/node/add/landingpage', '/node/add/gallery', '/admin/structure/menu/manage/main', '/admin/structure/taxonomy/manage/tags/add', '/admin/config/search/redirect']) {
       expect((await page.request.get(path)).status(), path).toBe(200);
     }
     // ...and site building is not.

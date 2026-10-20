@@ -1,0 +1,8 @@
+uuid: 4602ea8b-bc8e-4d95-9477-30f0177c8b0c
+langcode: en
+status: true
+dependencies: {  }
+id: banner
+label: Banner
+revision: false
+description: 'An image that links somewhere, for a sidebar or between sections: an ad, a campaign, a newsletter.'

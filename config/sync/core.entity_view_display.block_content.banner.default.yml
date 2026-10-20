@@ -1,0 +1,30 @@
+uuid: 479933c5-f717-44f0-a4f3-98f52d60fdaa
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.banner
+    - field.field.block_content.banner.field_banner_image
+    - field.field.block_content.banner.field_banner_link
+    - image.style.max_1300x1300
+  module:
+    - media
+id: block_content.banner.default
+targetEntityType: block_content
+bundle: banner
+mode: default
+content:
+  field_banner_image:
+    type: media_thumbnail
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: max_1300x1300
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_banner_link: true
+  langcode: true

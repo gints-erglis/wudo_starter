@@ -31,9 +31,12 @@
 }
 
 .layout-sidebar-second {
-  display: grid;
-  gap: var(--space-2xl);
   padding-bottom: var(--space-3xl);
+
+  > .region {
+    display: grid;
+    gap: var(--space-2xl);
+  }
 
   @include breakpoint.s {
     position: sticky;

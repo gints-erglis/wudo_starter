@@ -1,0 +1,24 @@
+uuid: b0974b2e-2279-469a-b564-74d55d981ed4
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.banner
+    - field.storage.block_content.field_banner_image
+    - media.type.image
+id: block_content.banner.field_banner_image
+field_name: field_banner_image
+entity_type: block_content
+bundle: banner
+label: Image
+description: 'Upload it in the size it is shown at, twice as large for sharp screens: 800 px wide for the sidebar. Its alternative text says what the banner says.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+field_type: entity_reference

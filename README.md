@@ -1,24 +1,105 @@
 # Wudo Drupal starter
 
-Drupal 11 starter project containing the site dependencies, custom theme,
-custom module, and project recipes in one repository. The project uses
-`web/` as its document root.
+A Drupal 11 starter kit that turns into a working site with one command: a
+fast, accessible and secure site with a component-based theme, ready for
+editors on day one, and readable by search engines and AI assistants.
 
-![Wudo screenshot](web/themes/custom/wudo/screenshot.png)
+[![CI](https://github.com/wunderio/wudo_starter/actions/workflows/ci.yml/badge.svg)](https://github.com/wunderio/wudo_starter/actions/workflows/ci.yml)
+![Drupal 11](https://img.shields.io/badge/Drupal-11-0678BE?logo=drupal&logoColor=white)
+![WCAG 2.2 AA](https://img.shields.io/badge/WCAG-2.2%20AA-2e7d32)
+![License GPL-2.0-or-later](https://img.shields.io/badge/license-GPL--2.0--or--later-555)
 
-## Repository layout
+![The front page with the demo content](docs/images/home.jpg)
 
-- `web/` is the Drupal document root.
-- `web/themes/custom/wudo/` contains the custom theme and its component source.
-- `web/modules/custom/wudo_theme_extension/` contains custom Drupal behavior and API endpoints.
-- `recipes/` contains the content recipes applied during installation.
-- `config/sync/` contains exported Drupal configuration tracked in Git.
-- `vendor/` and frontend dependencies are generated locally and are not committed.
+<p>
+  <img src="docs/images/article.jpg" alt="An article with its table of contents in the sidebar" width="74%">
+  <img src="docs/images/article-mobile.jpg" alt="The same article on a phone" width="24%">
+</p>
 
-Contributed extensions are managed by Composer. Custom extensions and recipes
-are committed directly in this repository.
+## Contents
 
-## Quick start
+- [Features](#features)
+- [Setup](#setup)
+  - [Quick start](#quick-start)
+  - [Starting a new site](#starting-a-new-site)
+  - [Installing without DDEV](#installing-without-ddev)
+- [Using the site](#using-the-site)
+  - [Roles](#roles)
+  - [Article pages](#article-pages)
+  - [Banners](#banners)
+  - ["Follow us" links](#follow-us-links)
+  - [SEO, discovery and security](#seo-discovery-and-security)
+- [Optional features](#optional-features)
+  - [Adding a language](#adding-a-language)
+  - [Adding projects](#adding-projects)
+  - [Adding search](#adding-search)
+  - [Adding AI tools](#adding-ai-tools)
+  - [Adding cookie consent](#adding-cookie-consent)
+- [Developing](#developing)
+  - [Repository layout](#repository-layout)
+  - [Configuration](#configuration)
+  - [Content recipes](#content-recipes)
+  - [Theme development](#theme-development)
+  - [Component catalog](#component-catalog)
+  - [Quality checks](#quality-checks)
+- [Deploying](#deploying)
+  - [Production](#production)
+  - [Settings and secrets](#settings-and-secrets)
+
+## Features
+
+**Ready in one command**
+- `ddev site-install` builds everything and installs the site from
+  configuration; `--demo` adds articles, a gallery and landing pages.
+- `ddev new-site acme` starts a client site from the starter, with its own
+  name, look and Git history.
+
+**Theme**
+- Single Directory Components in atomic layers, each with its Twig, SCSS and
+  JS, browsable in [Storybook](#component-catalog).
+- Landing pages built from paragraphs, a gallery with a lightbox, favorites
+  kept in the browser, a light and a dark theme.
+- [Article pages](#article-pages) with a readable line length, reading time
+  and a table of contents that follows the reader.
+- A site's own colors, fonts and logo in one folder, apart from the starter.
+
+**For editors**
+- A [content editor role](#roles) that runs the site without reaching site
+  building.
+- [Banners](#banners) for the sidebar, made from the media library.
+- [AI helpers](#adding-ai-tools) for alt text, page descriptions and writing
+  (optional).
+
+**Found by search engines and AI assistants**
+- Titles, descriptions, Open Graph, canonical URLs, an XML sitemap and
+  redirects.
+- schema.org structured data, `robots.txt` that keeps AI training crawlers
+  out, and `llms.txt`. See [SEO, discovery and security](#seo-discovery-and-security).
+
+**Secure and private by default**
+- A strict Content Security Policy: scripts from the site itself only.
+- Security headers, no credentials in Git, and a
+  [consent notice](#adding-cookie-consent) that blocks third parties until the
+  visitor agrees (optional).
+
+**Optional features, one command each**
+- [Languages](#adding-a-language), a [project portfolio](#adding-projects),
+  [site search](#adding-search), [AI tools](#adding-ai-tools) and
+  [cookie consent](#adding-cookie-consent).
+
+**Tested**
+- Coding standards, static analysis, unit and browser tests, accessibility
+  (axe, WCAG 2.2 AA) and Lighthouse scores of 100, on every pull request
+  together with an install from scratch. See [Quality checks](#quality-checks).
+
+**Deployable**
+- Runs on your own server with DDEV; `ddev deploy`, `ddev backup` and
+  `ddev restore`, and a deploy from GitHub after CI passes. See
+  [Deploying](#deploying).
+
+## Setup
+
+### Quick start
 
 Requires [DDEV](https://ddev.com). Everything else, including Composer and
 Node.js, runs inside the containers.
@@ -42,7 +123,7 @@ ddev site-install --demo
 Running the command on an existing site reinstalls it; Drush asks before
 dropping the database.
 
-## Starting a new site
+### Starting a new site
 
 To build a site on the starter rather than work on the starter itself, run
 this from the starter's directory:
@@ -71,7 +152,7 @@ From then on the site lives on its own. To pick up a later improvement of the
 starter, `git fetch starter` and `git cherry-pick` the commit, or
 `git merge starter/main` for everything.
 
-## Installing without DDEV
+### Installing without DDEV
 
 Create `web/sites/default/settings.local.php` with the database connection
 (see `web/sites/example.settings.local.php`), set the `DRUPAL_HASH_SALT`
@@ -89,63 +170,20 @@ vendor/bin/drush xmlsitemap:rebuild
 Use `../recipes/demo` in place of `../recipes/base_content` for the demo
 content.
 
-## Configuration
+## Using the site
 
-`config/sync/` is the single source of truth for site configuration, and the
-site is installed from it. Export after making intentional changes and import
-when deploying:
-
-```bash
-ddev drush config:export
-ddev drush config:import
-```
-
-## Roles
+### Roles
 
 - **Administrator** builds the site: content types, views, modules, settings.
 - **Content editor** (`content_editor`) runs it day to day: creates, edits and
   deletes every content type, uploads media, manages tags, menu links, URL
-  aliases and redirects, and uses the rich text editor. It cannot reach
-  people, modules, content types, views, appearance or site settings.
+  aliases, redirects and banners, and uses the rich text editor. It cannot
+  reach people, modules, content types, views, appearance or site settings.
 
 Give a client the content editor role. A browser test signs in as one, writes
 an article and checks which admin pages open and which answer 403.
 
-## Content recipes
-
-- `recipes/error_pages` holds the "Page not found" and "Access denied" pages
-  and is always applied.
-- `recipes/base_content` holds the home page. The front page setting points to
-  its `/home` alias.
-- `recipes/demo` holds the demo content, including its own `/home` page.
-
-Apply only one of the last two to a site. To update a recipe from a running site,
-export the entities with their dependencies:
-
-```bash
-ddev drush content:export node --with-dependencies --dir=../recipes/demo/content
-ddev drush content:export menu_link_content --dir=../recipes/demo/content
-```
-
-The `wudo_theme_extension` module makes paragraphs and hand-set URL aliases
-part of the export; paragraphs are written inline in the entity that owns them.
-
-## "Follow us" links
-
-The footer has a "Follow us" block that lists the links of the "Social links"
-menu as icons. Add the profiles at Structure → Menus → Social links
-(`/admin/structure/menu/manage/social`): the link title is the name read by
-screen readers, and the icon is picked from the address, so pasting
-`https://www.instagram.com/yourname` is enough. The block is hidden while the
-menu is empty.
-
-Facebook, Instagram, X, LinkedIn, YouTube, TikTok, Threads, Bluesky, Mastodon,
-WhatsApp, Telegram, Pinterest and GitHub are recognised, as are `mailto:`
-addresses and RSS feeds; anything else gets a globe. To add a network, put its
-icon in the theme's `assets/icons` and its domain in
-`wudo_preprocess_menu__social()` in `wudo.theme`.
-
-## Article pages
+### Article pages
 
 In lists an article card shows the description of the article, or, without
 one, the start of the paragraphs of its body as plain text; either way at
@@ -169,6 +207,8 @@ block is shown on, and below the content on small screens. The sidebar is
 25rem wide (`--sidebar-width`), which fits the common 300 px ad sizes. A page
 whose sidebar has nothing to show is laid out in one column.
 
+### Banners
+
 For an image that links somewhere (an ad, a campaign, a newsletter) there is
 the "Banner" block type: an image from the media library and a link.
 Content editors make them at Content → Blocks → Add content block; an
@@ -178,7 +218,56 @@ whole image is the link, and a link to another site is marked
 `rel="sponsored"`, as search engines expect of ads. Upload the image 800 px
 wide for sharp screens.
 
-## Adding a language
+### "Follow us" links
+
+The footer has a "Follow us" block that lists the links of the "Social links"
+menu as icons. Add the profiles at Structure → Menus → Social links
+(`/admin/structure/menu/manage/social`): the link title is the name read by
+screen readers, and the icon is picked from the address, so pasting
+`https://www.instagram.com/yourname` is enough. The block is hidden while the
+menu is empty.
+
+Facebook, Instagram, X, LinkedIn, YouTube, TikTok, Threads, Bluesky, Mastodon,
+WhatsApp, Telegram, Pinterest and GitHub are recognised, as are `mailto:`
+addresses and RSS feeds; anything else gets a globe. To add a network, put its
+icon in the theme's `assets/icons` and its domain in
+`wudo_preprocess_menu__social()` in `wudo.theme`.
+
+### SEO, discovery and security
+
+- `metatag` provides titles, descriptions, canonical URLs and Open Graph tags.
+- `xmlsitemap` serves `/sitemap.xml` for all three content types; the error
+  pages and the front page node are left out.
+- `redirect` keeps old URLs working when aliases change.
+- `schema_metatag` adds schema.org structured data (JSON-LD) that search
+  engines and AI assistants read: the site and its publisher on the front
+  page, a breadcrumb on every other page and the details of each article. The
+  publisher's logo is the theme logo (`[site:logo-url]`), so each site's own
+  `site/logo.svg` is used. Adjust at `/admin/config/search/metatag`.
+- `robotstxt` serves `/robots.txt` from configuration instead of a file, with
+  the address of the sitemap. Search and assistant crawlers that link back
+  (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, PerplexityBot and the like)
+  may crawl the site; crawlers that only collect training data (GPTBot,
+  ClaudeBot, Google-Extended, CCBot and others) are kept out. Edit the list at
+  `/admin/config/search/robotstxt`.
+- `llms_txt` serves `/llms.txt`, a Markdown summary of the site for AI
+  assistants ([llmstxt.org](https://llmstxt.org)): the site name and slogan,
+  the main menu and the sitemap. Edit it at `/admin/content/llms-txt`.
+- `csp` enforces a Content Security Policy that allows scripts from the site
+  itself only. Inline scripts and inline event handlers (`onclick="…"`) are
+  blocked, so attach behavior from JavaScript files. Embeds are allowed from
+  YouTube and Vimeo; add other sources at `/admin/config/system/csp`.
+- `seckit` sends `Strict-Transport-Security` and `Referrer-Policy`.
+
+## Optional features
+
+Each of these is a recipe in `recipes/`, added with one command on a fresh or
+a running site. The configuration is exported afterwards, so the feature is
+part of the site from then on, including fresh installs: review and commit
+`config/sync` (and `composer.json` and `composer.lock` when the command
+downloads modules).
+
+### Adding a language
 
 The starter ships with one language, English. To make the site multilingual,
 run one command with the code of the language to add:
@@ -214,7 +303,7 @@ drush xmlsitemap:rebuild
 drush config:export
 ```
 
-## Adding projects
+### Adding projects
 
 A portfolio of projects is optional. Add it with one command, on a fresh or a
 running site:
@@ -236,7 +325,7 @@ It applies the `recipes/projects` recipe, which adds:
 The configuration is exported afterwards, so projects are part of the site
 from then on, including fresh installs.
 
-### Fields or vocabularies
+#### Fields or vocabularies
 
 The rule the content type follows, and the one to keep when adapting it:
 
@@ -259,7 +348,7 @@ The rule the content type follows, and the one to keep when adapting it:
 | Body | formatted text | |
 | Gallery | media | lightbox |
 
-### Adapting it
+#### Adapting it
 
 Everything is done in the UI, without touching templates:
 
@@ -275,7 +364,7 @@ Everything is done in the UI, without touching templates:
 - the page title block is shown on listed paths only; keep `/projects` and
   `/projects/*` on that list when changing the aliases.
 
-## Adding search
+### Adding search
 
 Search is optional, like projects:
 
@@ -308,7 +397,7 @@ the page stay as they are, because they only know the index.
 After restoring a backup the index comes with the database. Should it ever be
 out of step: `ddev drush search-api:rebuild-tracker && ddev drush search-api:index`.
 
-## Adding AI tools
+### Adding AI tools
 
 AI helpers for editors are optional too. Visitors see nothing of them.
 
@@ -338,15 +427,15 @@ module and is never stored in the database or in `config/sync`.
   summarizes or translates. The result is shown first; the editor
   inserts it or not.
 
-Content editors may use both. The model and the prompts can be changed at
-`/admin/config/ai`. Without a key the site works as before; the buttons
+Content editors may use all three. The model and the prompts can be changed
+at `/admin/config/ai`. Without a key the site works as before; the buttons
 report an error and the reason is logged ("Could not load the Anthropic API
 key").
 
 What editors send to the AI goes to Anthropic. A site with personal data in
 its content needs a data processing agreement with Anthropic first.
 
-## Adding cookie consent
+### Adding cookie consent
 
 A consent notice is optional; a site that sets no cookies beyond its own and
 embeds nothing does not need one. Add it with one command:
@@ -390,63 +479,109 @@ Things to do on a real site:
   allow evaluating strings as code. Blocking a script until consent, as done
   here, does not need any.
 
-## Production
+## Developing
 
-`docs/production.md` describes running the site on your own Ubuntu server:
-DDEV behind the host's nginx with Let's Encrypt, production settings, mail
-through SMTP, cron, and moving the site to another server. The files it uses
-are in `deploy/`. Three commands do the routine work:
+### Repository layout
+
+- `web/` is the Drupal document root.
+- `web/themes/custom/wudo/` contains the custom theme and its component source.
+- `web/modules/custom/wudo_theme_extension/` contains custom Drupal behavior and API endpoints.
+- `recipes/` contains the content recipes and the optional features.
+- `config/sync/` contains exported Drupal configuration tracked in Git.
+- `tests/e2e/` contains the Playwright browser tests.
+- `deploy/` and `docs/` hold the production setup and its documentation.
+- `vendor/` and frontend dependencies are generated locally and are not committed.
+
+Contributed extensions are managed by Composer. Custom extensions and recipes
+are committed directly in this repository.
+
+### Configuration
+
+`config/sync/` is the single source of truth for site configuration, and the
+site is installed from it. Export after making intentional changes and import
+when deploying:
 
 ```bash
-ddev deploy                          # update the running site to the latest code
-ddev backup                          # database and uploaded files
-ddev restore backups/<timestamp>     # put a backup back
+ddev drush config:export
+ddev drush config:import
 ```
 
-With `.github/workflows/deploy.yml` set up, a push to `main` that passes CI is
-deployed without logging in to the server; see "Deploying from GitHub" there.
+### Content recipes
 
-`docs/local-development.md` describes the other direction: getting a copy of
-the live site onto your machine and sending code and configuration back.
+- `recipes/error_pages` holds the "Page not found" and "Access denied" pages
+  and is always applied.
+- `recipes/base_content` holds the home page. The front page setting points to
+  its `/home` alias.
+- `recipes/demo` holds the demo content, including its own `/home` page.
 
-## Settings and secrets
+Apply only one of the last two to a site. To update a recipe from a running site,
+export the entities with their dependencies:
 
-`web/sites/default/settings.php` is tracked in Git and contains no credentials.
-Database connections, API keys and other environment-specific values belong in
-`settings.local.php`, which is ignored, or in environment variables. Never
-commit credentials or production secrets.
+```bash
+ddev drush content:export node --with-dependencies --dir=../recipes/demo/content
+ddev drush content:export menu_link_content --dir=../recipes/demo/content
+```
 
-The DDEV-generated `settings.ddev.php` is local-only. Its permissive
-`trusted_host_patterns` setting is suitable for local development only; set
-explicit host patterns before deploying to a shared or production environment.
+The `wudo_theme_extension` module makes paragraphs and hand-set URL aliases
+part of the export; paragraphs are written inline in the entity that owns them.
 
-## SEO and security defaults
+### Theme development
 
-- `metatag` provides titles, descriptions, canonical URLs and Open Graph tags.
-- `xmlsitemap` serves `/sitemap.xml` for all three content types; the error
-  pages and the front page node are left out.
-- `redirect` keeps old URLs working when aliases change.
-- `schema_metatag` adds schema.org structured data (JSON-LD) that search
-  engines and AI assistants read: the site and its publisher on the front
-  page, a breadcrumb on every other page and the details of each article. The
-  publisher's logo is the theme logo (`[site:logo-url]`), so each site's own
-  `site/logo.svg` is used. Adjust at `/admin/config/search/metatag`.
-- `robotstxt` serves `/robots.txt` from configuration instead of a file, with
-  the address of the sitemap. Search and assistant crawlers that link back
-  (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, PerplexityBot and the like)
-  may crawl the site; crawlers that only collect training data (GPTBot,
-  ClaudeBot, Google-Extended, CCBot and others) are kept out. Edit the list at
-  `/admin/config/search/robotstxt`.
-- `llms_txt` serves `/llms.txt`, a Markdown summary of the site for AI
-  assistants ([llmstxt.org](https://llmstxt.org)): the site name and slogan,
-  the main menu and the sitemap. Edit it at `/admin/content/llms-txt`.
-- `csp` enforces a Content Security Policy that allows scripts from the site
-  itself only. Inline scripts and inline event handlers (`onclick="…"`) are
-  blocked, so attach behavior from JavaScript files. Embeds are allowed from
-  YouTube and Vimeo; add other sources at `/admin/config/system/csp`.
-- `seckit` sends `Strict-Transport-Security` and `Referrer-Policy`.
+npm runs inside the web container: use `ddev npm …` or `ddev exec`. Run these
+commands from `web/themes/custom/wudo`:
 
-## Quality checks
+```bash
+npm run dev
+npm run dev:sdc
+```
+
+Build production assets with `npm run build`. `node_modules/`, `dist/` and the
+`.css` files compiled next to each component's `.scss` are ignored by Git and
+recreated by the build, so run it after changing any `.scss` file.
+
+#### The site's own look
+
+What makes a site look different from the starter lives in
+`web/themes/custom/wudo/site/`: `_tokens.scss` for colors, fonts and sizes,
+`site.scss` for everything else, and `logo.svg`. It is built into
+`dist/site.css`, which is loaded after all other styles.
+
+The starter does not track that directory; the build creates it from
+`site.example/` when it is missing. `ddev new-site` adds it to the new site's
+repository, so the site's styling is versioned there and can never conflict
+with a later version of the starter. See the `README.md` in it.
+
+#### Twig template suggestions
+
+Enable Drupal's local theme development mode to show Twig template filenames
+and suggestions as HTML comments in the page source:
+
+```bash
+ddev drush theme:dev on
+ddev drush cr
+```
+
+Open the page source in the browser and look for comments such as
+`THEME DEBUG` and `THEME HOOK SUGGESTIONS`. Disable it before production:
+
+```bash
+ddev drush theme:dev off
+ddev drush cr
+```
+
+### Component catalog
+
+```bash
+ddev storybook
+```
+
+builds a Storybook catalog of the theme's Single Directory Components and
+prints its address. Every page is generated from the component's
+`*.component.yml` and rendered with its own Twig template, CSS and JS, so a
+new component shows up without writing a story. See
+`web/themes/custom/wudo/docs/storybook.md`.
+
+### Quality checks
 
 The same checks run in GitHub Actions (`.github/workflows/ci.yml`) on every
 pull request, together with a full `ddev site-install --demo` from scratch.
@@ -476,8 +611,8 @@ the first run downloads Chromium. They cover every page in the XML sitemap:
   article;
 - content editor: can write an article, cannot reach site building pages;
 - AI tools: the assistant in the text editor, the description and the alt
-  text buttons, when
-  AI is installed (no requests to the AI provider are made);
+  text buttons, when AI is installed (no requests to the AI provider are
+  made);
 - discovery: `robots.txt`, `llms.txt` and the structured data of the front
   page and an article;
 - accessibility: axe-core, WCAG 2.2 AA, on desktop and mobile viewports;
@@ -491,57 +626,34 @@ the site was installed with `--demo`.
 `vendor/bin/phpcbf` and `npm run lint:css -- --fix` fix most style issues
 automatically.
 
-## Component catalog
+## Deploying
+
+### Production
+
+`docs/production.md` describes running the site on your own Ubuntu server:
+DDEV behind the host's nginx with Let's Encrypt, production settings, mail
+through SMTP, cron, and moving the site to another server. The files it uses
+are in `deploy/`. Three commands do the routine work:
 
 ```bash
-ddev storybook
+ddev deploy                          # update the running site to the latest code
+ddev backup                          # database and uploaded files
+ddev restore backups/<timestamp>     # put a backup back
 ```
 
-builds a Storybook catalog of the theme's Single Directory Components and
-prints its address. Every page is generated from the component's
-`*.component.yml` and rendered with its own Twig template, CSS and JS, so a
-new component shows up without writing a story. See
-`web/themes/custom/wudo/docs/storybook.md`.
+With `.github/workflows/deploy.yml` set up, a push to `main` that passes CI is
+deployed without logging in to the server; see "Deploying from GitHub" there.
 
-## Theme development
+`docs/local-development.md` describes the other direction: getting a copy of
+the live site onto your machine and sending code and configuration back.
 
-Run these commands from `web/themes/custom/wudo`:
+### Settings and secrets
 
-```bash
-npm run dev
-npm run dev:sdc
-```
+`web/sites/default/settings.php` is tracked in Git and contains no credentials.
+Database connections, API keys and other environment-specific values belong in
+`settings.local.php`, which is ignored, or in environment variables. Never
+commit credentials or production secrets.
 
-Build production assets with `npm run build`. `node_modules/`, `dist/` and the
-`.css` files compiled next to each component's `.scss` are ignored by Git and
-recreated by the build, so run it after changing any `.scss` file.
-
-### The site's own look
-
-What makes a site look different from the starter lives in
-`web/themes/custom/wudo/site/`: `_tokens.scss` for colors, fonts and sizes,
-`site.scss` for everything else, and `logo.svg`. It is built into
-`dist/site.css`, which is loaded after all other styles.
-
-The starter does not track that directory; the build creates it from
-`site.example/` when it is missing. `ddev new-site` adds it to the new site's
-repository, so the site's styling is versioned there and can never conflict
-with a later version of the starter. See the `README.md` in it.
-
-### Twig template suggestions
-
-Enable Drupal's local theme development mode to show Twig template filenames
-and suggestions as HTML comments in the page source:
-
-```bash
-ddev drush theme:dev on
-ddev drush cr
-```
-
-Open the page source in the browser and look for comments such as
-`THEME DEBUG` and `THEME HOOK SUGGESTIONS`. Disable it before production:
-
-```bash
-ddev drush theme:dev off
-ddev drush cr
-```
+The DDEV-generated `settings.ddev.php` is local-only. Its permissive
+`trusted_host_patterns` setting is suitable for local development only; set
+explicit host patterns before deploying to a shared or production environment.

@@ -11,11 +11,6 @@ editors on day one, and readable by search engines and AI assistants.
 
 ![The front page with the demo content](docs/images/home.jpg)
 
-<p>
-  <img src="docs/images/article.jpg" alt="An article with its table of contents in the sidebar" width="74%">
-  <img src="docs/images/article-mobile.jpg" alt="The same article on a phone" width="24%">
-</p>
-
 ## Contents
 
 - [Features](#features)

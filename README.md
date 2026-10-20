@@ -25,6 +25,7 @@ editors on day one, and readable by search engines and AI assistants.
   - [Installing without DDEV](#installing-without-ddev)
 - [Using the site](#using-the-site)
   - [Roles](#roles)
+  - [Content types](#content-types)
   - [Article pages](#article-pages)
   - [Banners](#banners)
   - ["Follow us" links](#follow-us-links)
@@ -48,54 +49,81 @@ editors on day one, and readable by search engines and AI assistants.
 
 ## Features
 
-**Ready in one command**
-- `ddev site-install` builds everything and installs the site from
-  configuration; `--demo` adds articles, a gallery and landing pages.
-- `ddev new-site acme` starts a client site from the starter, with its own
-  name, look and Git history.
+**Quick setup**
+- One-command install from configuration kept in Git.
+- Optional demo content: articles, a gallery and landing pages.
+- New client sites from the starter, each with its own name, look and Git
+  history.
+
+[Read more →](#setup)
 
 **Theme**
-- Single Directory Components in atomic layers, each with its Twig, SCSS and
-  JS, browsable in [Storybook](#component-catalog).
-- Landing pages built from paragraphs, a gallery with a lightbox, favorites
-  kept in the browser, a light and a dark theme.
-- [Article pages](#article-pages) with a readable line length, reading time
-  and a table of contents that follows the reader.
-- A site's own colors, fonts and logo in one folder, apart from the starter.
+- Single Directory Components in atomic layers, with Twig, SCSS and JS side
+  by side.
+- A Storybook catalog generated from the components.
+- Favorites saved in the browser, light and dark mode.
+- Each site's colors, fonts and logo kept apart from the starter.
+
+[Read more →](#theme-development)
+
+**Content types**
+- Landing pages built from paragraphs: hero, sections, cards, media, text,
+  parallax layers and views.
+- Articles with readable text, reading time and a table of contents.
+- Galleries of images with a lightbox.
+- Projects for a portfolio, with facts and filters (optional).
+
+[Read more →](#content-types)
 
 **For editors**
-- A [content editor role](#roles) that runs the site without reaching site
-  building.
-- [Banners](#banners) for the sidebar, made from the media library.
-- [AI helpers](#adding-ai-tools) for alt text, page descriptions and writing
-  (optional).
+- A content editor role that runs the site without reaching site building.
+- Banner blocks made from the media library.
+- Optional AI help: alt text, page descriptions and a writing assistant.
 
-**Found by search engines and AI assistants**
-- Titles, descriptions, Open Graph, canonical URLs, an XML sitemap and
-  redirects.
-- schema.org structured data, `robots.txt` that keeps AI training crawlers
-  out, and `llms.txt`. See [SEO, discovery and security](#seo-discovery-and-security).
+[Read more →](#roles)
 
-**Secure and private by default**
+**SEO and AI discovery**
+- Meta tags, Open Graph and canonical URLs.
+- An XML sitemap and redirects for changed URLs.
+- schema.org structured data (JSON-LD).
+- A `robots.txt` that keeps AI training crawlers out, and an `llms.txt`.
+
+[Read more →](#seo-discovery-and-security)
+
+**Security and privacy**
 - A strict Content Security Policy: scripts from the site itself only.
-- Security headers, no credentials in Git, and a
-  [consent notice](#adding-cookie-consent) that blocks third parties until the
-  visitor agrees (optional).
+- HSTS and referrer policy headers.
+- No credentials in Git; secrets come from the environment.
+- An optional consent notice that blocks third parties until the visitor
+  agrees.
 
-**Optional features, one command each**
-- [Languages](#adding-a-language), a [project portfolio](#adding-projects),
-  [site search](#adding-search), [AI tools](#adding-ai-tools) and
-  [cookie consent](#adding-cookie-consent).
+[Read more →](#seo-discovery-and-security)
 
-**Tested**
-- Coding standards, static analysis, unit and browser tests, accessibility
-  (axe, WCAG 2.2 AA) and Lighthouse scores of 100, on every pull request
-  together with an install from scratch. See [Quality checks](#quality-checks).
+**Optional features**
+- More languages.
+- A project portfolio with filters.
+- Site search with results while typing.
+- AI tools for editors.
+- Cookie consent, with Google Analytics if needed.
 
-**Deployable**
-- Runs on your own server with DDEV; `ddev deploy`, `ddev backup` and
-  `ddev restore`, and a deploy from GitHub after CI passes. See
-  [Deploying](#deploying).
+[Read more →](#optional-features)
+
+**Quality**
+- Drupal coding standards and static analysis.
+- Unit tests and browser tests of every page.
+- Accessibility checked against WCAG 2.2 AA.
+- Lighthouse scores of 100 for accessibility, best practices and SEO.
+- All of it in CI on every pull request, with an install from scratch.
+
+[Read more →](#quality-checks)
+
+**Deployment**
+- Your own Ubuntu server: DDEV behind nginx with Let's Encrypt.
+- Deploy, backup and restore built in.
+- Automatic deploys from GitHub once CI passes.
+- A copy of the live site for local development.
+
+[Read more →](#deploying)
 
 ## Setup
 
@@ -183,55 +211,64 @@ content.
 Give a client the content editor role. A browser test signs in as one, writes
 an article and checks which admin pages open and which answer 403.
 
+### Content types
+
+| Type | For | Read more |
+| --- | --- | --- |
+| Landing page | Pages built from paragraphs: hero, section, layout, card, media, text, parallax layer and view (a list of content). The home page is one. | |
+| Article | Writing: a main image and the body, with the date, reading time and a table of contents from its headings. | [Article pages](#article-pages) |
+| Gallery | A set of images shown in a grid that opens in a lightbox. | |
+| Project | A piece of work for a portfolio: facts, a description, a gallery, and a filtered list of all projects. Optional. | [Adding projects](#adding-projects) |
+
+Every type has a description: the meta description in search results, and
+the summary on the cards in lists.
+
 ### Article pages
 
-In lists an article card shows the description of the article, or, without
-one, the start of the paragraphs of its body as plain text; either way at
-most three lines, so the cards line up.
-
-An article shows its date, the time it takes to read (about 200 words a
-minute) and the favorite button above the main image, and keeps its text to
-a readable line length of about 75 characters.
-
-The h2 and h3 headings of the body make a table of contents once there are
-two or more. The headings get an id (from their text, or the one set in the
-editor's source view), so a section can be linked to: `/article/…#warm-tones`.
-On wide screens the contents are in a sidebar and mark the section being
-read; on small screens they are a "Contents" list to open at the top of the
-article.
-
-The sidebar is the "Sidebar second" region. The table of contents is a block
-in it, shown on articles only; anything else placed there at Structure →
-Block layout (an ad, a newsletter sign-up) appears under it, on any page the
-block is shown on, and below the content on small screens. The sidebar is
-25rem wide (`--sidebar-width`), which fits the common 300 px ad sizes. A page
-whose sidebar has nothing to show is laid out in one column.
+- **Cards** in lists show the article's description, or the first lines of
+  its body when it has none, in at most three lines.
+- **Header**: the publication date, the reading time (at 200 words a minute)
+  and a favorite button, above the main image.
+- **Readable text**: about 75 characters a line.
+- **Table of contents** from the H2 and H3 headings, once there are at least
+  two. The headings get anchor ids, so a section can be linked to:
+  `/article/…#warm-tones`.
+- **Responsive**: the contents are in a sidebar on wide screens, marking the
+  section being read, and a collapsible list above the article on small
+  screens.
+- **Sidebar**: the "Sidebar second" region. The contents appear on articles
+  only; other blocks there follow their own visibility settings and come
+  below the article on small screens. A page with nothing in the sidebar has
+  one column.
 
 ### Banners
 
-For an image that links somewhere (an ad, a campaign, a newsletter) there is
-the "Banner" block type: an image from the media library and a link.
-Content editors make them at Content → Blocks → Add content block; an
-administrator places one in "Sidebar second" at Structure → Block layout,
-with "Content type: Article" under Visibility to keep it to articles. The
-whole image is the link, and a link to another site is marked
-`rel="sponsored"`, as search engines expect of ads. Upload the image 800 px
-wide for sharp screens.
+- **Banner** block type: an image from the media library and an optional
+  link. The whole image is the link.
+- **Ads**: a link to another site is marked `rel="sponsored"`, as search
+  engines expect.
+- **Size**: as wide as the sidebar; upload images 800 px wide for sharp
+  screens.
+
+**Configuration**: content editors make banners at Content → Blocks → Add
+content block. An administrator places one in "Sidebar second" at Structure →
+Block layout; "Content type: Article" under Visibility keeps it to articles.
 
 ### "Follow us" links
 
-The footer has a "Follow us" block that lists the links of the "Social links"
-menu as icons. Add the profiles at Structure → Menus → Social links
-(`/admin/structure/menu/manage/social`): the link title is the name read by
-screen readers, and the icon is picked from the address, so pasting
-`https://www.instagram.com/yourname` is enough. The block is hidden while the
-menu is empty.
+- **Footer block** listing the links of the "Social links" menu as icons;
+  hidden while the menu is empty.
+- **Icons from the address**: Facebook, Instagram, X, LinkedIn, YouTube,
+  TikTok, Threads, Bluesky, Mastodon, WhatsApp, Telegram, Pinterest, GitHub,
+  `mailto:` addresses and RSS feeds are recognised; anything else gets a
+  globe.
 
-Facebook, Instagram, X, LinkedIn, YouTube, TikTok, Threads, Bluesky, Mastodon,
-WhatsApp, Telegram, Pinterest and GitHub are recognised, as are `mailto:`
-addresses and RSS feeds; anything else gets a globe. To add a network, put its
-icon in the theme's `assets/icons` and its domain in
-`wudo_preprocess_menu__social()` in `wudo.theme`.
+**Configuration**: add the profiles at Structure → Menus → Social links
+(`/admin/structure/menu/manage/social`); pasting
+`https://www.instagram.com/yourname` is enough, and the link title is the
+name read by screen readers. To recognise another network, put its icon in
+the theme's `assets/icons` and its domain in `wudo_preprocess_menu__social()`
+in `wudo.theme`.
 
 ### SEO, discovery and security
 
@@ -544,7 +581,9 @@ recreated by the build, so run it after changing any `.scss` file.
 What makes a site look different from the starter lives in
 `web/themes/custom/wudo/site/`: `_tokens.scss` for colors, fonts and sizes,
 `site.scss` for everything else, and `logo.svg`. It is built into
-`dist/site.css`, which is loaded after all other styles.
+`dist/site.css`, which is loaded after all other styles. Sizes of the layout
+are tokens too, for example the article sidebar's width, `--sidebar-width`
+(25rem, which fits the common 300 px ad sizes).
 
 The starter does not track that directory; the build creates it from
 `site.example/` when it is missing. `ddev new-site` adds it to the new site's

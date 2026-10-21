@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+## Description: Run a script of the theme's package.json in the theme, from anywhere; "dev" watches the components and the bundle together
+## Usage: theme <script> [-- arguments]
+## Example: "ddev theme dev", "ddev theme build" or "ddev theme lint:css -- --fix"
+
+set -euo pipefail
+
+cd "$DDEV_COMPOSER_ROOT/$DDEV_DOCROOT/themes/custom/wudo"
+
+if [ ! -d node_modules ]; then
+  npm ci
+fi
+
+if [ $# -eq 0 ]; then
+  echo "Usage: ddev theme <script>, e.g. ddev theme dev or ddev theme build" >&2
+  npm run
+  exit 1
+fi
+
+if [ "$1" = dev ]; then
+  # Each component's .scss to .css, and the bundle in dist/, on every change.
+  # Ctrl+C stops both.
+  trap 'kill 0' EXIT
+  npm run dev:sdc &
+  npm run dev
+  exit
+fi
+
+npm run "$@"

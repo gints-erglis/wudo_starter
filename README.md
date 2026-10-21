@@ -559,17 +559,20 @@ part of the export; paragraphs are written inline in the entity that owns them.
 
 ### Theme development
 
-npm runs inside the web container: use `ddev npm …` or `ddev exec`. Run these
-commands from `web/themes/custom/wudo`:
+`ddev theme` runs the theme's npm scripts inside the web container, from any
+directory, and installs the npm packages on first use:
 
 ```bash
-npm run dev
-npm run dev:sdc
+ddev theme dev                  # watch: components' .scss to .css, and dist/
+ddev theme build                # everything once, as a deploy does
+ddev theme lint:css             # style check; add -- --fix to fix
+ddev theme                      # list all scripts
 ```
 
-Build production assets with `npm run build`. `node_modules/`, `dist/` and the
-`.css` files compiled next to each component's `.scss` are ignored by Git and
-recreated by the build, so run it after changing any `.scss` file.
+`node_modules/`, `dist/` and the `.css` files compiled next to each
+component's `.scss` are ignored by Git and recreated by the build, so run it
+after changing any `.scss` file. Clear Drupal's cache (`ddev drush cr`) when a
+page still shows the old styles.
 
 #### The site's own look
 
@@ -624,7 +627,7 @@ pull request, together with a full `ddev site-install --demo` from scratch.
 ddev exec vendor/bin/phpcs      # Drupal coding standards
 ddev exec vendor/bin/phpstan    # static analysis
 ddev exec vendor/bin/phpunit    # tests, on a throwaway SQLite database
-ddev npm run lint:css           # run in web/themes/custom/wudo
+ddev theme lint:css             # style check of the theme
 ddev e2e                        # browser tests against the installed site
 ```
 
@@ -657,7 +660,7 @@ The HTML report, with Lighthouse reports attached, is written to
 `tests/e2e/playwright-report`. Tests that need articles are skipped unless
 the site was installed with `--demo`.
 
-`vendor/bin/phpcbf` and `npm run lint:css -- --fix` fix most style issues
+`vendor/bin/phpcbf` and `ddev theme lint:css -- --fix` fix most style issues
 automatically.
 
 ## Deploying

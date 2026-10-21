@@ -29,3 +29,23 @@
     }
   }
 }
+
+// Makes an element and everything in it light or dark: the scheme tokens,
+// text, links, buttons, icons and a one-color logo. The same as the
+// .scheme-light and .scheme-dark classes, for a site's styles:
+//
+//   @use "../components/00-base/00-defaults/03-mixins" as *;
+//   .site-header { @include scheme(dark); }
+@mixin scheme($scheme) {
+  @if $scheme == dark {
+    --logo-filter: brightness(0) invert(1);
+  } @else {
+    --logo-filter: none;
+  }
+
+  color-scheme: $scheme;
+
+  // The text color is inherited as a finished color, so it is set again for
+  // the content.
+  color: var(--color-text);
+}

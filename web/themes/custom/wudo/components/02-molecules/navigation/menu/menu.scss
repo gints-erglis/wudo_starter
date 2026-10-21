@@ -10,16 +10,10 @@
 
   --navigation-spacing: var(--space-lg, 1rem);
   --border-size: 1px;
-  --dropdown-background: var(--color-gray-10, #f5f5f5);
+  --dropdown-background: var(--color-surface-muted);
   --dropdown-padding: var(--space-lg, 1rem);
-  --menu-item-color: var(--color-gray-90, #333333);
-  --menu-item-color-hover: var(--color-gray-90, #333333);
-
-  [data-theme="dark"] & {
-    --dropdown-background: var(--color-neutral-90, #333333);
-    --menu-item-color: var(--color-gray-40, #bdbdbd);
-    --menu-item-color-hover: var(--color-gray-20, #e5e5e5);
-  }
+  --menu-item-color: var(--color-text);
+  --menu-item-color-hover: var(--color-text);
 
   padding: 0;
 

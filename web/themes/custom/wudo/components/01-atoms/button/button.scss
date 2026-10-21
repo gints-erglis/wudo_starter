@@ -47,8 +47,10 @@
     }
   }
 
+  // Follows the color scheme it is in, as the browser's own buttons would.
   &--secondary {
-    //
+    color: var(--color-text);
+    background: var(--color-surface-muted);
   }
 
   // Size.

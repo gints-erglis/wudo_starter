@@ -93,6 +93,18 @@ class StyleSettingsBehavior extends ParagraphsBehaviorBase {
       '#tree' => TRUE,
     ];
 
+    $form['colors_background']['color_scheme'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Color scheme'),
+      '#description' => $this->t('Light or dark colors for the section and everything in it: text, links, buttons and menus. The text color below is then not used.'),
+      '#options' => [
+        '' => $this->t('As the page'),
+        'light' => $this->t('Light'),
+        'dark' => $this->t('Dark'),
+      ],
+      '#default_value' => $paragraph->getBehaviorSetting($this->getPluginId(), 'color_scheme', ''),
+    ];
+
     $form['colors_background']['text'] = [
       '#type' => 'color',
       '#title' => $this->t('Text color'),
@@ -198,6 +210,7 @@ class StyleSettingsBehavior extends ParagraphsBehaviorBase {
     $margin_bottom = $paragraph->getBehaviorSetting($this->getPluginId(), 'margin_bottom', 0);
     $layout = $paragraph->getBehaviorSetting($this->getPluginId(), 'layout', 'contained');
     $full_width_background = $paragraph->getBehaviorSetting($this->getPluginId(), 'full_width_background', FALSE);
+    $color_scheme = $paragraph->getBehaviorSetting($this->getPluginId(), 'color_scheme', '');
 
     $build['#attributes']['class'][] = 'layout-' . $layout;
     if ($background_style) {
@@ -212,7 +225,16 @@ class StyleSettingsBehavior extends ParagraphsBehaviorBase {
     if ($border_radius !== '') {
       $build['#attributes']['style'][] = 'border-radius: ' . $border_radius . ';';
     }
-    $build['#attributes']['style'][] = 'color: ' . $text . ';';
+    if ($color_scheme) {
+      // The scheme sets the text color, and the background unless one is set.
+      $build['#attributes']['class'][] = 'scheme-' . $color_scheme;
+      if (!$use_background) {
+        $build['#attributes']['class'][] = 'scheme-surface';
+      }
+    }
+    else {
+      $build['#attributes']['style'][] = 'color: ' . $text . ';';
+    }
     $build['#attributes']['style'][] = 'padding: ' . $padding . ';';
     $build['#attributes']['style'][] = 'margin-top: ' . $margin_top . ';';
     $build['#attributes']['style'][] = 'margin-bottom: ' . $margin_bottom . ';';

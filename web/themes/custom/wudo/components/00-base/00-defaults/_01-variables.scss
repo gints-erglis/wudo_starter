@@ -1,9 +1,27 @@
+@use "03-mixins" as mixins;
+
 :root {
   interpolate-size: allow-keywords;
+  color-scheme: light;
+
+  /*
+   * Color scheme: each of these holds a light and a dark value, and the
+   * nearest "color-scheme" picks one. The page is light, or dark with
+   * data-theme="dark"; any element can be the other with .scheme-dark or
+   * .scheme-light, and everything in it follows. Components use these instead
+   * of fixed colors, and need no dark rules of their own.
+   */
+  --color-surface: light-dark(#ffffff, #454545);
+  --color-surface-muted: light-dark(#f5f5f5, #333333);
+  --color-surface-raised: light-dark(#ffffff, #333333);
+  --color-surface-strong: light-dark(#e5e5e5, #000000);
+  --color-text: light-dark(#222222, #f8f8f8);
+  --color-text-muted: light-dark(#616161, #d4d4d4);
+  --color-border: light-dark(#e5e5e5, #616161);
 
   /* Colors */
-  --color-page-bg: #ffffff;
-  --color-text-primary: #222222;
+  --color-page-bg: var(--color-surface);
+  --color-text-primary: var(--color-text);
   --color-highlighted: #00823b;
   --color-semantic-success-10: #e8fcf1;
   --color-semantic-success-20: #a5e1bf;
@@ -75,6 +93,20 @@
 }
 
 [data-theme="dark"] {
-  --color-page-bg: #454545;
-  --color-text-primary: #f8f8f8;
+  --logo-filter: brightness(0) invert(1);
+
+  color-scheme: dark;
+}
+
+.scheme-dark {
+  @include mixins.scheme(dark);
+}
+
+.scheme-light {
+  @include mixins.scheme(light);
+}
+
+// The background of the scheme, for an element that has none of its own.
+.scheme-surface {
+  background-color: var(--color-surface);
 }

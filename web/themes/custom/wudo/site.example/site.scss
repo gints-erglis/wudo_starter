@@ -3,10 +3,20 @@
 //
 // Most of the look is changed without new rules: components read their
 // colors and sizes from custom properties declared at the top of their .scss
-// file, and those can be set here. For example, a dark header:
+// file, and those can be set here.
+//
+// A part of the page in the other color scheme: everything in it (text,
+// links, menus, buttons, icons, a one-color logo) follows. For example, a
+// dark header with its own color, keeping a logo in colors as it is:
 //
 // .site-header {
-//   --header-bg: var(--color-black);
+//   @include scheme(dark);
+//   --header-bg: #07140f;
+// }
+//
+// .branding__logo {
+//   --logo-filter: none;
 // }
 
 @use "tokens";
+@use "../components/00-base/00-defaults/03-mixins" as *;

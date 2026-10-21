@@ -588,6 +588,22 @@ The starter does not track that directory; the build creates it from
 repository, so the site's styling is versioned there and can never conflict
 with a later version of the starter. See the `README.md` in it.
 
+#### Color schemes
+
+Colors come in pairs, one for light and one for dark, and the nearest
+`color-scheme` picks one: the page is light, or dark with the theme toggler.
+Any part of a page can be the other: an element with `.scheme-dark` or
+`.scheme-light`, or `@include scheme(dark)` in the site's styles, and
+everything in it follows, text, links, menus, buttons, icons and a one-color
+logo, at any depth and in both directions. Editors get the same as "Color scheme" in a section's
+styles.
+
+Components use the scheme tokens (`--color-surface`, `--color-surface-muted`,
+`--color-surface-raised`, `--color-text`, `--color-text-muted`,
+`--color-border`, in `_01-variables.scss`) or `light-dark()` instead of fixed
+colors, and need no dark rules of their own. The header, menus, footer,
+buttons and article cards do so far.
+
 #### Twig template suggestions
 
 Enable Drupal's local theme development mode to show Twig template filenames
@@ -652,6 +668,8 @@ the first run downloads Chromium. They cover every page in the XML sitemap:
   made);
 - discovery: `robots.txt`, `llms.txt` and the structured data of the front
   page and an article;
+- color schemes: a dark header on a light page, a light part of a dark page
+  and the footer keep readable contrast;
 - accessibility: axe-core, WCAG 2.2 AA, on desktop and mobile viewports;
 - Lighthouse: accessibility, best practices and SEO must score 100.
 

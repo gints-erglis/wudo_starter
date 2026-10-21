@@ -4,15 +4,13 @@
 .site-header {
   $root: &;
 
-  --header-bg: var(--color-neutral-10, #f5f5f5);
-  --utils-bg: var(--color-neutral-20, #e5e5e5);
-
-  [data-theme="dark"] & {
-    --header-bg: var(--color-neutral-90, #333333);
-    --utils-bg: var(--color-black, #000000);
-  }
+  // Light or dark with the scheme it is in; .scheme-dark on the header, or
+  // "color-scheme: dark" in the site's styles, makes it dark on a light page.
+  --header-bg: var(--color-surface-muted);
+  --utils-bg: var(--color-surface-strong);
 
   background-color: var(--header-bg);
+  color: var(--color-text);
 
   // A sticky element only travels inside its parent, and <sticky-header> sits
   // in this header, which is no taller than itself. So the header does the

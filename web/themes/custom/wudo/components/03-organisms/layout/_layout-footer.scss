@@ -1,14 +1,16 @@
 @use "../../00-base/00-defaults/_02-breakpoints.scss" as breakpoint;
 @use "../../00-base/00-defaults/_03-mixins.scss" as *;
 
-// The page footer only; other <footer> elements keep their own look.
+// The page footer only; other <footer> elements keep their own look. It is
+// dark on light and dark pages alike, so its menus, links and icons are too.
 .site-footer {
-  background-color: #000;
-  color: var(--color-white, #fff);
+  --footer-bg: var(--color-black, #000);
+  --link-color: var(--color-text);
+  --link-hover-color: var(--color-text-muted);
 
-  // The default link and menu colors are unreadable on black.
-  --link-color: var(--color-white, #fff);
-  --link-hover-color: var(--color-neutral-30, #d4d4d4);
+  color-scheme: dark;
+  background-color: var(--footer-bg);
+  color: var(--color-text);
 
   .footer-main {
     padding-block: 2rem;
@@ -44,11 +46,6 @@
         }
       }
     }
-  }
-
-  .menu {
-    --menu-item-color: var(--color-white, #fff);
-    --menu-item-color-hover: var(--color-neutral-30, #d4d4d4);
   }
 
   .footer-bottom {

@@ -1,0 +1,10 @@
+# PHP security updates that are out before a DDEV release ships them, e.g.
+# 8.4.27 (CVE-2026-109618, CVE-2026-109619, remote code execution). Applied
+# when the web image is built: "ddev restart". DDEV's own PHP configuration
+# is kept. Remove once "ddev version" shows a webserver image with that PHP
+# release or newer.
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --only-upgrade \
+    -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confdef" \
+    "php${DDEV_PHP_VERSION}-*" \
+  && rm -rf /var/lib/apt/lists/*

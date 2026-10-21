@@ -20,11 +20,7 @@
   $root: &;
 
   --duration: 0.3s;
-  --bg: var(--color-surface, #fff);
-
-  [data-theme="dark"] & {
-    --bg: var(--color-neutral-80, #222);
-  }
+  --bg: light-dark(var(--color-white, #fff), var(--color-neutral-80, #424242));
 
   position: fixed;
   inset: 0;
@@ -51,6 +47,7 @@
   &__inner {
     position: absolute;
     background: var(--bg);
+    color: var(--color-text);
     display: flex;
     flex-direction: column;
     transition: transform var(--duration) ease-in-out, opacity var(--duration);
@@ -93,7 +90,7 @@
 
   &__header {
     padding: 1rem;
-    border-bottom: 1px solid #e3e3de;
+    border-bottom: 1px solid var(--color-border);
     display: flex;
     justify-content: space-between;
     align-items: center;

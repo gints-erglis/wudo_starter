@@ -13,15 +13,11 @@ details {
   $root: '.accordion';
 
   // 1. Local variable definitions
-  --details-border-color: var(--color-neutral-20, #e5e5e5);
+  // Light or dark with the color scheme the accordion is in.
+  --details-border-color: light-dark(var(--color-neutral-20, #e5e5e5), var(--color-neutral-90, #333333));
   --details-border-radius: var(--radius-sm, 3px);
-  --summary-bg-color: var(--color-neutral-10, #f5f5f5);
+  --summary-bg-color: light-dark(var(--color-neutral-10, #f5f5f5), var(--color-neutral-90, #333333));
   --accordion-transition: 0.3s ease;
-
-  [data-theme="dark"] & {
-    --details-border-color: var(--color-neutral-90, #222);
-    --summary-bg-color: var(--color-neutral-90, #222);
-  }
 
   // 2. Base styles
   margin-bottom: var(--space-lg);
@@ -37,6 +33,7 @@ details {
     align-items: center;
     cursor: pointer;
     background-color: var(--summary-bg-color);
+    color: var(--color-text);
     border-radius: var(--details-border-radius) var(--details-border-radius) 0 0;
     list-style: none;
     margin: 0;

@@ -13,7 +13,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-sm) var(--space-lg);
-    color: var(--color-neutral-70);
+    color: var(--color-text-muted);
     font-size: var(--font-size-2xs);
   }
 
@@ -56,8 +56,4 @@
       display: none;
     }
   }
-}
-
-[data-theme="dark"] .article__meta {
-  color: var(--color-neutral-30);
 }

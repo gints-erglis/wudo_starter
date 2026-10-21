@@ -1,8 +1,10 @@
 .breadcrumbs {
   --breadcrumb-gap: 0.5rem;
-  --breadcrumb-color-link: #2563eb;
-  --breadcrumb-color-current: #1a1a1a;
-  --breadcrumb-color-separator: #ccc;
+
+  // Light or dark with the color scheme the breadcrumb is in.
+  --breadcrumb-color-link: light-dark(#2563eb, #8cc8ff);
+  --breadcrumb-color-current: var(--color-text);
+  --breadcrumb-color-separator: light-dark(#ccc, var(--color-neutral-60, #757575));
 
   margin: 1rem 0;
 }
@@ -37,7 +39,7 @@
 
 .breadcrumbs__link:hover {
   text-decoration: underline;
-  color: #1d4ed8;
+  color: light-dark(#1d4ed8, #b8dcff);
 }
 
 .breadcrumbs__current {

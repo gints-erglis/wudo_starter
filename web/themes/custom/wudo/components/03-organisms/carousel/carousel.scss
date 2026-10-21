@@ -15,17 +15,12 @@
 .carousel {
   $root: &;
 
-  --carousel-accent: var(--color-neutral-80, #424242);
-  --carousel-track-bg: var(--color-neutral-10, #f5f5f5);
-  --carousel-btn-bg: var(--color-white, #ffffff);
+  // Light or dark with the color scheme the carousel is in.
+  --carousel-accent: light-dark(var(--color-neutral-80, #424242), var(--color-neutral-10, #f5f5f5));
+  --carousel-track-bg: light-dark(var(--color-neutral-10, #f5f5f5), var(--color-neutral-90, #333333));
+  --carousel-btn-bg: light-dark(var(--color-white, #ffffff), var(--color-neutral-90, #333333));
   --carousel-dot-size: 12px;
   --items: 1;
-
-  [data-theme="dark"] & {
-    --carousel-accent: var(--color-neutral-10, #f5f5f5);
-    --carousel-track-bg: var(--color-neutral-90, #333333);
-    --carousel-btn-bg: var(--color-neutral-90, #333333);
-  }
 
   display: block;
   position: relative;

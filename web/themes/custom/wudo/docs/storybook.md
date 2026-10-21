@@ -89,3 +89,9 @@ Templates are rendered in the browser by Twing, not by Drupal:
   shows example data or nothing.
 - Accessibility is not checked here. The Playwright tests (`ddev e2e`) run
   axe against the real pages.
+
+## Color schemes
+
+The "Scheme" menu in the toolbar shows a story on a light page, a dark page,
+or as a dark or light part of the other page. A component should read well in
+all four; see [color-schemes.md](color-schemes.md).

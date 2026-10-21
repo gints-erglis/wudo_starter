@@ -8,11 +8,9 @@ sticky-header {
   top: 0;
   z-index: var(--sticky-header-z-index, 110);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  background-color: white; // Ensure background covers content when sticky
 
-  [data-theme="dark"] & {
-    background-color: var(--color-neutral-90, #333333);
-  }
+  // Covers the content when sticky: the header's color, or the page's.
+  background-color: var(--header-bg, var(--color-surface));
 
   &.is-hidden {
     transform: translateY(-100%);

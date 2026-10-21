@@ -7,18 +7,15 @@
   $root: &;
 
   --track-padding: 4px;
-  --track-bg: var(--color-neutral-10, #f5f5f5);
+
+  // Light or dark with the color scheme the toggler is in.
+  --track-bg: light-dark(var(--color-neutral-10, #f5f5f5), var(--color-neutral-90, #333333));
   --icon-size: 1rem; // 16px
   --icon-color: var(--color-neutral-60, #757575);
   --thumb-size: 1.5rem; // 24px
-  --thumb-color: var(--color-white, #ffffff);
+  --thumb-color: light-dark(var(--color-white, #ffffff), var(--color-neutral-10, #f5f5f5));
   --track-width: 5.5rem; // 88px
   --track-radius: 2.5rem; // 40px
-
-  [data-theme="dark"] & {
-    --track-bg: var(--color-neutral-90, #333333);
-    --thumb-color: var(--color-neutral-10, #f5f5f5);
-  }
 
   &__btn {
     display: block;

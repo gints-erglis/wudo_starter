@@ -1,8 +1,10 @@
 lang-selector {
   --lang-min-width: 9rem;
   --lang-bullet-size: 1.5rem;
-  --lang-bullet-color: var(--color-gray-8, #353535);
-  --lang-dropdown-bg: var(--color-white, #fff);
+
+  // Light or dark with the color scheme the switcher is in.
+  --lang-bullet-color: var(--color-text);
+  --lang-dropdown-bg: var(--color-surface-raised);
 
   display: inline-block;
   position: relative;
@@ -13,16 +15,16 @@ lang-selector {
     align-items: center;
     justify-content: flex-start;
     gap: 8px;
-    border: 1px solid var(--color-neutral-10, #f5f5f5);
+    border: 1px solid currentcolor;
     padding: 0.5em 0.8em;
     font-size: 1rem;
     text-transform: none;
-    color: var(--color-neutral-10, #f5f5f5);
+    color: var(--color-text);
     background-color: transparent;
     transition: all 0.3s ease-in-out;
 
     &:hover {
-      color: var(--color-neutral-10, #f5f5f5);
+      color: var(--color-text);
       background-color: transparent;
     }
 
@@ -78,7 +80,7 @@ lang-selector {
     border-radius: 2px;
 
     &:hover {
-      background-color: var(--color-neutral-10, #f5f5f5);
+      background-color: var(--color-surface-muted);
     }
 
     &:focus-within {
@@ -106,7 +108,7 @@ lang-selector {
       display: block;
       padding: 0.1em 0.3em;
       text-decoration: none;
-      color: #333;
+      color: var(--color-text);
 
       &:focus-visible {
         outline: none;

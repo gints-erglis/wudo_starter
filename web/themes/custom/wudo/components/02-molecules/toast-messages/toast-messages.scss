@@ -71,7 +71,9 @@
     &--warning {
       --toast-bg: var(--color-semantic-warning-10, #f8ede6);
       --toast-accent: var(--color-semantic-warning-60, #bc4b00);
-      --toast-color: var(--color-semantic-warning-60, #bc4b00);
+
+      // Darker than the accent, for 4.5:1 on the light background.
+      --toast-color: #9a3d00;
       --progress-bg: var(--color-semantic-warning-40, #ef9117);
     }
 

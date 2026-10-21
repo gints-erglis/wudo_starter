@@ -21,6 +21,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+// Links without a component of their own follow the color scheme they are in,
+// as .link does, instead of the browser's blue.
+a {
+  color: light-dark(#0063a3, #8cc8ff);
+}
+
 img {
   max-width: 100%;
   height: auto;

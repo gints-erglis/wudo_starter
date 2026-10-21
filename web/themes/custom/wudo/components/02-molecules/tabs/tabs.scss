@@ -4,21 +4,15 @@
  */
 
 .tabs {
-  --tabs-border-color: var(--color-neutral-20, #e5e5e5);
-  --tabs-background: var(--color-neutral-10, #f5f5f5);
-  --tabs-active-color: var(--color-text-primary, #222222);
-  --tabs-active-background: var(--color-white, #ffffff);
+  // Light or dark with the color scheme the tabs are in.
+  --tabs-border-color: light-dark(var(--color-neutral-20, #e5e5e5), var(--color-neutral-60, #757575));
+  --tabs-background: light-dark(var(--color-neutral-10, #f5f5f5), var(--color-neutral-90, #333333));
+  --tabs-active-color: var(--color-text);
+  --tabs-active-background: light-dark(var(--color-white, #ffffff), #454545);
   --tabs-focus-color: var(--color-semantic-info-60, #2563eb);
   --tabs-spacing: 0.1rem;
   --tabs-radius: var(--radius-sm, 5px);
-  --tab-shadow: 0px 0px 4px var(--tabs-border-color);
-
-  [data-theme="dark"] & {
-    --tabs-border-color: var(--color-neutral-60, #757575);
-    --tabs-background: var(--color-neutral-90, #333333);
-    --tabs-active-background: var(--color-page-bg, #454545);
-    --tab-shadow: none;
-  }
+  --tab-shadow: 0 0 4px light-dark(var(--color-neutral-20, #e5e5e5), transparent);
 
   margin-block: var(--tabs-spacing);
 
@@ -30,6 +24,7 @@
     -webkit-overflow-scrolling: touch;
     gap: var(--tabs-spacing);
     background: var(--tabs-background);
+    color: var(--color-text);
     box-shadow: inset 0 -3px 0 var(--tabs-border-color);
     border-radius: var(--tabs-radius) var(--tabs-radius) 0 0;
 
@@ -51,6 +46,7 @@
     &[aria-selected="true"],
     &.is-active {
       background: var(--tabs-active-background);
+      color: var(--tabs-active-color);
       box-shadow: var(--tab-shadow);
     }
 

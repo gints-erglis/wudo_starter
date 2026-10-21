@@ -4,15 +4,10 @@
  */
 
 .quantity-input {
-  --border-color: var(--color-neutral-20, #e5e5e5);
-  --button-bg: var(--color-neutral-10, #f5f5f5);
-  --button-color: var(--color-text-primary, #222222);
-
-  [data-theme="dark"] & {
-    --border-color: var(--color-neutral-60, #757575);
-    --button-bg: var(--color-neutral-80, #424242);
-    --button-color: var(--color-neutral-40, #bdbdbd);
-  }
+  // Light or dark with the color scheme the field is in.
+  --border-color: light-dark(var(--color-neutral-20, #e5e5e5), var(--color-neutral-60, #757575));
+  --button-bg: light-dark(var(--color-neutral-10, #f5f5f5), var(--color-neutral-80, #424242));
+  --button-color: light-dark(var(--color-text-primary, #222222), var(--color-neutral-40, #bdbdbd));
 
   display: inline-flex;
   align-items: stretch;

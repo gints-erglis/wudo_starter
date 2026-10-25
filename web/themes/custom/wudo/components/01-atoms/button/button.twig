@@ -33,6 +33,11 @@
 
 {% set attributes = attributes|default(create_attribute()) %}
 {% do attributes.addClass(classes) %}
+{# The type of the component is its style; that of the element is a button,
+   unless the attributes make it a submit button. #}
+{% if url is not defined and not attributes.hasAttribute('type') %}
+  {% do attributes.setAttribute('type', 'button') %}
+{% endif %}
 {% if is_disabled %}
   {% do attributes.setAttribute('disabled', 'disabled') %}
 {% endif %}
@@ -82,7 +87,7 @@
     {{ content_markup }}
   </a>
 {% else %}
-  <button type="{{ type|default('button') }}"{{ attributes }}>
+  <button{{ attributes }}>
     {{ content_markup }}
   </button>
 {% endif %}

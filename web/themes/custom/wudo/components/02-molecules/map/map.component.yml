@@ -1,0 +1,37 @@
+'$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
+
+name: Map
+description: "A place on an OpenStreetMap map, with links to a larger map and to directions."
+
+status: experimental
+
+group: Molecules
+
+props:
+  type: object
+  required:
+    - latitude
+    - longitude
+    - title
+  properties:
+    latitude:
+      type: number
+      title: Latitude
+      examples:
+        - 60.1694
+    longitude:
+      type: number
+      title: Longitude
+      examples:
+        - 24.9522
+    title:
+      type: string
+      title: Title
+      description: What is on the map, for screen readers and the links.
+      examples:
+        - 'Senate Square, Helsinki'
+    modifier_class:
+      type: string
+      title: Modifier class
+      examples:
+        - 'custom-class'

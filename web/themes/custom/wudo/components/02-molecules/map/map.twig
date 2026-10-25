@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Map component.
+ *
+ * OpenStreetMap sets no cookies, so the map needs no consent. Directions
+ * open in Google Maps, which most visitors navigate with.
+ *
+ * Variables:
+ * - latitude: [number] Latitude of the place.
+ * - longitude: [number] Longitude of the place.
+ * - title: [string] What is on the map.
+ * - modifier_class: [string] Additional classes.
+ */
+#}
+
+{% set lat = latitude|number_format(6, '.', '') %}
+{% set lon = longitude|number_format(6, '.', '') %}
+{# About 600 by 300 metres around the place. #}
+{% set bbox = [
+  (longitude - 0.005)|number_format(6, '.', ''),
+  (latitude - 0.0015)|number_format(6, '.', ''),
+  (longitude + 0.005)|number_format(6, '.', ''),
+  (latitude + 0.0015)|number_format(6, '.', ''),
+]|join(',') %}
+
+<div class="map {{ modifier_class|default('') }}">
+  <iframe
+    class="map__frame"
+    src="https://www.openstreetmap.org/export/embed.html?bbox={{ bbox }}&amp;layer=mapnik&amp;marker={{ lat }},{{ lon }}"
+    title="{{ 'Map: @title'|t({'@title': title}) }}"
+    loading="lazy"
+  ></iframe>
+  <p class="map__links">
+    <a href="https://www.openstreetmap.org/?mlat={{ lat }}&amp;mlon={{ lon }}#map=17/{{ lat }}/{{ lon }}" aria-label="{{ 'Larger map'|t }}: {{ title }}">{{ 'Larger map'|t }}</a>
+    <a href="https://www.google.com/maps/dir/?api=1&amp;destination={{ lat }},{{ lon }}" aria-label="{{ 'Directions'|t }}: {{ title }}">{{ 'Directions'|t }}</a>
+  </p>
+</div>

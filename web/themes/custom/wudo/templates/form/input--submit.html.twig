@@ -13,6 +13,7 @@
  */
 #}
 
-<button{{ attributes.addClass(['button--primary','inverted']) }}>
+{# Primary, unless the form marks it secondary (#button_type). #}
+<button{{ attributes.addClass(attributes.hasClass('button--secondary') ? [] : ['button--primary', 'inverted']) }}>
   {{ element['#value'] }}
 </button>{{ children }}

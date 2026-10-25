@@ -20,6 +20,7 @@
   border: 0;
   border-radius: var(--radius-xs, 3px);
   font-size: var(--button-font-size);
+  text-decoration: none;
   text-transform: uppercase;
 
   &--with-badge {

@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { collectErrors, sitePaths } from '../support/pages.js';
 
 test('every page renders without script or CSP errors', async ({ page, request }) => {
+  const width = page.viewportSize().width;
   for (const path of await sitePaths(request)) {
     await test.step(path, async () => {
       const errors = collectErrors(page);
@@ -12,6 +13,8 @@ test('every page renders without script or CSP errors', async ({ page, request }
       await expect(page.locator('h1'), 'exactly one h1').toHaveCount(1);
       await expect(page.locator('html'), 'language').toHaveAttribute('lang', /.+/);
       await expect(page, 'title').toHaveTitle(/.+/);
+      // Wider than the screen, a page makes a phone zoom out.
+      expect(await page.evaluate(() => window.innerWidth), 'no wider than the screen').toBe(width);
       // The 404 response itself is logged by the browser as a failed resource.
       expect(errors.filter((error) => !(expected === 404 && /404/.test(error))), 'console errors').toEqual([]);
       page.removeAllListeners('console');

@@ -9,19 +9,37 @@
   display: flex;
   justify-content: center;
 
+  // On a phone the links wrap: wider than the screen, they would widen the
+  // page.
   #{$root}__items {
+    min-width: 0;
     margin: 0;
     padding: 0;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    column-gap: .5rem;
+    gap: .5rem;
     list-style: none;
   }
 
   #{$root}__item--ellipsis {
     padding: 0 2px;
     text-align: center;
+  }
+
+  // On a phone, the arrows and the pages next to the current one: all of
+  // them would wrap to more lines.
+  @media (width < 48rem) {
+    #{$root}__item:not(
+      #{$root}__item--active,
+      #{$root}__item--first,
+      #{$root}__item--previous,
+      #{$root}__item--next,
+      #{$root}__item--last
+    ):not(:has(+ #{$root}__item--active)):not(#{$root}__item--active + *) {
+      display: none;
+    }
   }
 
   #{$root}__item--first,
@@ -52,8 +70,8 @@
     }
 
     &.link--active {
-      background-color: var(--color-primary-light);
-      color: white;
+      background-color: var(--color-button-primary-background, #186cd5);
+      color: var(--color-button-primary-color, #ffffff);
     }
 
     &.link--disabled {

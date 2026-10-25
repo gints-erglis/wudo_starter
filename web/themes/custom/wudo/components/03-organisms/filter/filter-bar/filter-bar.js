@@ -17,6 +17,9 @@ class WudoFilterBar extends HTMLElement {
     this._request = null;
 
     this.addEventListener('change', (e) => {
+      if (e.target.matches('input[type="checkbox"]') && !e.target.checked) {
+        this._uncheckNested(e.target);
+      }
       this._sync();
       if (e.target.matches('select, input[type="checkbox"], input[type="radio"]')) {
         this._submit();
@@ -112,6 +115,7 @@ class WudoFilterBar extends HTMLElement {
           label: `${group}${labelOf(control)}`,
           clear: () => {
             control.checked = false;
+            this._uncheckNested(control);
             if (control.type === 'radio') {
               const none = Array.from(form.elements[control.name]).find((r) => EMPTY_VALUES.includes(r.value));
               if (none) none.checked = true;
@@ -171,6 +175,17 @@ class WudoFilterBar extends HTMLElement {
         badge.append(String(filters.length), hint);
       }
     }
+  }
+
+  /**
+   * Unchecks the options nested under an option, hidden once it is unchecked.
+   */
+  _uncheckNested(control) {
+    const item = control.closest('li');
+    if (!item) return;
+    item.querySelectorAll(':scope > ul input[type="checkbox"]').forEach((nested) => {
+      nested.checked = false;
+    });
   }
 
   _clearAll() {

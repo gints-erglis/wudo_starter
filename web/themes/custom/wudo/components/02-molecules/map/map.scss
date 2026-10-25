@@ -1,0 +1,28 @@
+//
+// Map component.
+//
+
+.map {
+  $root: &;
+
+  margin: 0;
+
+  #{$root}__frame {
+    display: block;
+    width: 100%;
+    // Taller on a phone, where the credits take a good part of the map.
+    aspect-ratio: 4 / 3;
+    @media (min-width: 48rem) {
+      aspect-ratio: 16 / 9;
+    }
+    border: 0;
+    border-radius: var(--radius-md);
+  }
+
+  #{$root}__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 0.5rem 0 0;
+  }
+}

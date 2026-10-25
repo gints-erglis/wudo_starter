@@ -4,13 +4,16 @@
   {% set active_lang = languages|filter(l => l.is_active)|first %}
   {% set current_text = active_lang ? active_lang.text : languages|first.text %}
 
+  {# On a phone the globe stands for it; the label of the button names it. #}
+  {% set current_markup %}<span class="lang-switcher__current">{{ current_text }}</span>{% endset %}
+
   {{ include('wudo:button', {
     type: 'secondary',
     size: 'regular',
     icon: 'globe',
     icon_placement: 'before',
     icon_size: 'regular',
-    text: current_text,
+    text: current_markup,
     attributes: create_attribute({
       'data-target': 'button',
       'aria-expanded': 'false',

@@ -1,7 +1,7 @@
 '$schema': 'https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json'
 
 name: Quantity Input
-description: "Number input with decrease and increase buttons."
+description: "Number field with buttons that decrease and increase it; a plain number field without JavaScript."
 status: stable
 group: Atoms
 
@@ -28,5 +28,19 @@ props:
     name:
       type: string
       title: Field name
+      description: The name of the field the component makes when the input slot is empty.
       examples:
         - quantity
+    label:
+      type: string
+      title: Label
+      description: The accessible name of the field the component makes; a field of a form has its own label.
+      examples:
+        - Quantity
+
+slots:
+  input:
+    title: Input
+    description: A number field of its own, e.g. that of a Drupal form, with its name, ID and limits. The buttons read min, max and step from it.
+    examples:
+      - '<input type="number" name="quantity" value="2" min="1" max="10" step="1" aria-label="Quantity">'

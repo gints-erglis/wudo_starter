@@ -28,6 +28,11 @@
     margin-bottom: 0;
   }
 
+  // Nested options (subcategories) show under a checked option only.
+  .bef-nested li:has(> .form-item input:not(:checked)) > ul {
+    display: none;
+  }
+
   .form-actions {
     display: flex;
     gap: 0.5rem;

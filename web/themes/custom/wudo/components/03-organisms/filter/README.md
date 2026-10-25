@@ -14,6 +14,10 @@ it.
   footer shows the result summary next to "Show results".
 - **Active filters** are listed above the results as chips that remove them,
   with "Clear all".
+- **Nested checkboxes** (a taxonomy with "Use hierarchy" and "Always expand
+  hierarchy"): the options under an option show once it is checked, and
+  unchecking it unchecks them. A checked child keeps its parents checked
+  (`wudo_preprocess_bef_checkboxes()`), though Facets queries the child only.
 - **Accessibility:** only the results are replaced, so focus stays on the
   control in use; the result summary is announced through a live region; the
   drawer traps focus and returns it to its trigger.
@@ -38,4 +42,6 @@ it.
 The element with the ID `<id>-results` is what gets replaced. Inside it,
 `[data-filter-summary]` (or `[data-filter-empty]` when there are no rows) is
 the text that is announced; in a view, add the "Result summary" header to
-provide it. The view does not need "Use AJAX".
+provide it. Leave "Use AJAX" and the auto-submit of Better Exposed Filters
+off: the filter bar submits on a change itself, and they would send the form
+again and replace it while it is in use.

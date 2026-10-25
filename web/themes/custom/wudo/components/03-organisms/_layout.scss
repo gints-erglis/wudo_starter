@@ -1,8 +1,11 @@
 @use "../00-base/00-defaults/_02-breakpoints.scss" as breakpoint;
 @use "../00-base/00-defaults/_03-mixins.scss" as *;
 
+// One column no wider than the screen: an auto column grows to its widest
+// content, and a phone zooms the page out to show it.
 .layout-container {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr auto;
   min-height: 100vh;
   min-height: 100dvh;

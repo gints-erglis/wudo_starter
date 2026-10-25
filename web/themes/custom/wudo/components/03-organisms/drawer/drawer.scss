@@ -26,6 +26,9 @@
   inset: 0;
   z-index: 999999;
   visibility: hidden;
+  // The closed panel waits outside the screen; a phone would widen the page
+  // to show it, zoom out and lose the drawer's trigger.
+  overflow: hidden;
   transition: visibility var(--duration);
 
   &[open] {

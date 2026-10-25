@@ -1,24 +1,45 @@
-<wudo-quantity
-  class="quantity-input"
-  data-min="{{ min|default(1) }}"
-  {% if max %}data-max="{{ max }}"{% endif %}
-  data-step="{{ step|default(1) }}"
->
-  <button type="button" class="quantity-input__btn" data-action="minus" aria-label="Decrease">
-    -
+{#
+/**
+ * @file
+ * Quantity input component.
+ *
+ * The buttons are shown once the script runs; until then, and without it,
+ * the field is a plain number field. They are left out of the tab order:
+ * the arrow keys change the field itself.
+ *
+ * Variables:
+ * - value: [integer] Current quantity, for the field the component makes.
+ * - min, max, step: [integer] Limits of that field.
+ * - name: [string] Name of that field.
+ * - label: [string] Accessible name of that field.
+ *
+ * Slots:
+ * - input: A number field of its own, e.g. that of a Drupal form.
+ */
+#}
+<wudo-quantity class="quantity-input">
+  <button type="button" class="quantity-input__btn" data-action="minus" tabindex="-1" aria-label="{{ 'Decrease quantity'|t }}">
+    <span aria-hidden="true">−</span>
   </button>
 
-  <input
-    type="number"
-    class="quantity-input__field"
-    name="{{ name|default('quantity') }}"
-    value="{{ value|default(1) }}"
-    min="{{ min|default(1) }}"
-    {% if max %}max="{{ max }}"{% endif %}
-    step="{{ step|default(1) }}"
-  >
+  {% block input %}
+    {% if input %}
+      {{ input }}
+    {% else %}
+    <input
+      type="number"
+      class="quantity-input__field"
+      name="{{ name|default('quantity') }}"
+      value="{{ value|default(1) }}"
+      min="{{ min ?? 1 }}"
+      {% if max %}max="{{ max }}"{% endif %}
+      step="{{ step|default(1) }}"
+      aria-label="{{ label|default('Quantity'|t) }}"
+    >
+    {% endif %}
+  {% endblock %}
 
-  <button type="button" class="quantity-input__btn" data-action="plus" aria-label="Increase">
-    +
+  <button type="button" class="quantity-input__btn" data-action="plus" tabindex="-1" aria-label="{{ 'Increase quantity'|t }}">
+    <span aria-hidden="true">+</span>
   </button>
 </wudo-quantity>

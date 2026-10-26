@@ -1,0 +1,19 @@
+uuid: 3c790db6-1ff5-4563-a504-eacd7d917bba
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_address
+    - paragraphs.paragraphs_type.map
+id: paragraph.map.field_address
+field_name: field_address
+entity_type: paragraph
+bundle: map
+label: Address
+description: 'Shown next to the map, line by line as written.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

@@ -53,6 +53,7 @@ enforce:
         - 'https://www.youtube.com'
         - 'https://www.youtube-nocookie.com'
         - 'https://player.vimeo.com'
+        - 'https://www.openstreetmap.org'
     object-src:
       base: none
     worker-src:

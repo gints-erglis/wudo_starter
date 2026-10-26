@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * Theme override to display a map paragraph.
+ *
+ * The coordinates are validated as "latitude, longitude"
+ * (wudo_theme_extension).
+ *
+ * @see template_preprocess_paragraph()
+ */
+#}
+{% set coordinates = paragraph.field_coordinates.value|split(',') %}
+<div{{ attributes.addClass('paragraph--map') }}>
+  {{ include('wudo:map', {
+    latitude: coordinates[0]|trim * 1,
+    longitude: coordinates[1]|trim * 1,
+    title: paragraph.field_tagline.value,
+    address: paragraph.field_address.value|default(''),
+  }, with_context = false) }}
+</div>

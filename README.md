@@ -63,7 +63,7 @@ editors on day one, and readable by search engines and AI assistants.
 
 **Content types**
 - Landing pages built from paragraphs: hero, sections, cards, media, text,
-  parallax layers and views.
+  maps, parallax layers and views.
 - Articles with readable text, reading time and a table of contents.
 - Galleries of images with a lightbox.
 - Projects for a portfolio, with facts and filters (optional).
@@ -210,7 +210,7 @@ an article and checks which admin pages open and which answer 403.
 
 | Type | For | Read more |
 | --- | --- | --- |
-| Landing page | Pages built from paragraphs: hero, section, layout, card, media, text, parallax layer and view (a list of content). The home page is one. | |
+| Landing page | Pages built from paragraphs: hero, section, layout, card, media, text, map (a place with its address and directions), parallax layer and view (a list of content). The home page is one. | |
 | Article | Writing: a main image and the body, with the date, reading time and a table of contents from its headings. | [Article pages](#article-pages) |
 | Gallery | A set of images shown in a grid that opens in a lightbox. | |
 | Project | A piece of work for a portfolio: facts, a description, a gallery, and a filtered list of all projects. Optional. | [Adding projects](#adding-projects) |

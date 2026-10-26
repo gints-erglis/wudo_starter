@@ -1,13 +1,14 @@
 # Map
 
 A place on an OpenStreetMap map, with a link to a larger map and one to
-directions in Google Maps. OpenStreetMap sets no cookies, so the map needs no
+directions in Google Maps; both are external links that open in a new tab.
+OpenStreetMap sets no cookies, so the map needs no
 consent; the site's Content Security Policy has to allow it as a frame
 source (`https://www.openstreetmap.org`).
 
-To let editors place maps, add a paragraph type with a latitude, a
-longitude and a title, and include the component in its template
-(`paragraph--map.html.twig`).
+Editors place a map with the "Map" paragraph: the name of the place, its
+coordinates as Google Maps copies them ("56.9496, 24.1052") and an address
+(`templates/paragraphs/paragraph--map.html.twig`).
 
 ## Props
 
@@ -16,6 +17,7 @@ longitude and a title, and include the component in its template
 | `latitude` | `number` | Latitude of the place. |
 | `longitude` | `number` | Longitude of the place. |
 | `title` | `string` | What is on the map: the frame's title and the end of the links for screen readers. |
+| `address` | `string` | Optional address, shown under the name of the place line by line. |
 | `modifier_class` | `string` | Additional classes. |
 
 ## Usage (Twig)
@@ -25,5 +27,6 @@ longitude and a title, and include the component in its template
   latitude: 60.1694,
   longitude: 24.9522,
   title: 'Senate Square, Helsinki',
+  address: "Aleksanterinkatu 1\n00170 Helsinki",
 } only %}
 ```

@@ -7,6 +7,7 @@ dependencies:
     - paragraphs.paragraphs_type.card
     - paragraphs.paragraphs_type.hero
     - paragraphs.paragraphs_type.layout_wrapper
+    - paragraphs.paragraphs_type.map
     - paragraphs.paragraphs_type.media
     - paragraphs.paragraphs_type.text
     - paragraphs.paragraphs_type.view
@@ -31,6 +32,7 @@ settings:
       card: card
       view: view
       media: media
+      map: map
     negate: 0
     target_bundles_drag_drop:
       card:
@@ -42,6 +44,9 @@ settings:
       layout_wrapper:
         weight: 11
         enabled: false
+      map:
+        weight: 10
+        enabled: true
       media:
         weight: 9
         enabled: true

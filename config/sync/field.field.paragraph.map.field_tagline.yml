@@ -1,0 +1,24 @@
+uuid: 9f8e45e9-2aa1-471e-b532-7228d6a8cec4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tagline
+    - filter.format.plain_text
+    - paragraphs.paragraphs_type.map
+  module:
+    - text
+id: paragraph.map.field_tagline
+field_name: field_tagline
+entity_type: paragraph
+bundle: map
+label: Place
+description: 'The name of the place, such as the office. It is the title of the map for screen readers.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - plain_text
+field_type: text

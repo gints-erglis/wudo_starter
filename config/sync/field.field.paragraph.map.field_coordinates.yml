@@ -1,0 +1,19 @@
+uuid: b01b19d2-5dce-447e-9995-babb04a6b15e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_coordinates
+    - paragraphs.paragraphs_type.map
+id: paragraph.map.field_coordinates
+field_name: field_coordinates
+entity_type: paragraph
+bundle: map
+label: Coordinates
+description: 'Latitude and longitude, such as <em>56.9496, 24.1052</em>. In Google Maps, right-click the place and click the coordinates to copy them.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

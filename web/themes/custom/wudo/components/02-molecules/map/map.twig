@@ -10,6 +10,8 @@
  * - latitude: [number] Latitude of the place.
  * - longitude: [number] Longitude of the place.
  * - title: [string] What is on the map.
+ * - address: [string] Optional address, shown under the name of the place
+ *   line by line.
  * - modifier_class: [string] Additional classes.
  */
 #}
@@ -31,8 +33,29 @@
     title="{{ 'Map: @title'|t({'@title': title}) }}"
     loading="lazy"
   ></iframe>
+  {% if address %}
+    <address class="map__address">
+      <strong>{{ title }}</strong><br>
+      {{ address|nl2br }}
+    </address>
+  {% endif %}
+  {# Other sites, in a new tab: the label replaces the text of the link, so
+     it says so too. #}
+  {% set new_window = '(' ~ 'Opens in a new tab/window'|t ~ ')' %}
   <p class="map__links">
-    <a href="https://www.openstreetmap.org/?mlat={{ lat }}&amp;mlon={{ lon }}#map=17/{{ lat }}/{{ lon }}" aria-label="{{ 'Larger map'|t }}: {{ title }}">{{ 'Larger map'|t }}</a>
-    <a href="https://www.google.com/maps/dir/?api=1&amp;destination={{ lat }},{{ lon }}" aria-label="{{ 'Directions'|t }}: {{ title }}">{{ 'Directions'|t }}</a>
+    {{ include('wudo:link', {
+      text: 'Larger map'|t,
+      url: 'https://www.openstreetmap.org/?mlat=' ~ lat ~ '&mlon=' ~ lon ~ '#map=17/' ~ lat ~ '/' ~ lon,
+      is_external: true,
+      is_new_window: true,
+      attributes: create_attribute({'aria-label': 'Larger map'|t ~ ': ' ~ title ~ ' ' ~ new_window}),
+    }, with_context = false) }}
+    {{ include('wudo:link', {
+      text: 'Directions'|t,
+      url: 'https://www.google.com/maps/dir/?api=1&destination=' ~ lat ~ ',' ~ lon,
+      is_external: true,
+      is_new_window: true,
+      attributes: create_attribute({'aria-label': 'Directions'|t ~ ': ' ~ title ~ ' ' ~ new_window}),
+    }, with_context = false) }}
   </p>
 </div>

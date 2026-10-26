@@ -1,0 +1,10 @@
+uuid: 93b3f9ef-cd05-4dc0-9610-58fbf910565c
+langcode: en
+status: true
+dependencies: {  }
+id: map
+label: Map
+icon_uuid: null
+icon_default: null
+description: 'A place on a map, with its address and directions.'
+behavior_plugins: {  }

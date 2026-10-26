@@ -6,6 +6,7 @@ namespace Drupal\wudo_theme_extension\Hook;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Extension\ThemeSettingsProvider;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
@@ -74,6 +75,26 @@ class WudoThemeExtensionHooks {
   #[Hook('field_widget_complete_paragraphs_form_alter')]
   public function paragraphsWidgetAlter(array &$field_widget_complete_form, FormStateInterface $form_state, array $context): void {
     $field_widget_complete_form['#attached']['library'][] = 'wudo_theme_extension/paragraph_behavior';
+  }
+
+  /**
+   * Implements hook_entity_bundle_field_info_alter().
+   *
+   * The coordinates of a map paragraph are a latitude and a longitude, as
+   * Google Maps and OpenStreetMap copy them: "56.9496, 24.1052".
+   */
+  #[Hook('entity_bundle_field_info_alter')]
+  public function entityBundleFieldInfoAlter(array &$fields, EntityTypeInterface $entity_type, string $bundle): void {
+    if ($entity_type->id() !== 'paragraph' || !isset($fields['field_coordinates'])) {
+      return;
+    }
+    $fields['field_coordinates']->addPropertyConstraints('value', [
+      'Regex' => [
+        'pattern' => '/^\s*-?(90(\.0+)?|[1-8]?\d(\.\d+)?)\s*,\s*-?(180(\.0+)?|(1[0-7]\d|[1-9]?\d)(\.\d+)?)\s*$/',
+        // Translated by the validator.
+        'message' => 'Enter the latitude and the longitude separated by a comma, such as 56.9496, 24.1052.',
+      ],
+    ]);
   }
 
   /**

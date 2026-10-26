@@ -10,13 +10,20 @@
   #{$root}__frame {
     display: block;
     width: 100%;
+    border: 0;
+    border-radius: var(--radius-md);
+
     // Taller on a phone, where the credits take a good part of the map.
     aspect-ratio: 4 / 3;
+
     @media (min-width: 48rem) {
       aspect-ratio: 16 / 9;
     }
-    border: 0;
-    border-radius: var(--radius-md);
+  }
+
+  #{$root}__address {
+    margin: 0.75rem 0 0;
+    font-style: normal;
   }
 
   #{$root}__links {

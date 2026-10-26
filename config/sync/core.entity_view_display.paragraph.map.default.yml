@@ -1,0 +1,39 @@
+uuid: 672b2f8a-dce5-498c-af6a-faf23bcb812f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.map.field_address
+    - field.field.paragraph.map.field_coordinates
+    - field.field.paragraph.map.field_tagline
+    - paragraphs.paragraphs_type.map
+  module:
+    - text
+id: paragraph.map.default
+targetEntityType: paragraph
+bundle: map
+mode: default
+content:
+  field_address:
+    type: basic_string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_coordinates:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_tagline:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

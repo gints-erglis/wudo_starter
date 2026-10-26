@@ -30,6 +30,12 @@ props:
       description: What is on the map, for screen readers and the links.
       examples:
         - 'Senate Square, Helsinki'
+    address:
+      type: string
+      title: Address
+      description: Shown under the name of the place, line by line.
+      examples:
+        - "Aleksanterinkatu 1\n00170 Helsinki"
     modifier_class:
       type: string
       title: Modifier class

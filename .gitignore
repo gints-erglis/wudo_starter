@@ -50,3 +50,6 @@ NOTES.md
 # Production: backups and server secrets.
 /backups/
 /.ddev/.env
+
+# DDEV-generated router config and local mkcert certificates.
+/.ddev/traefik/

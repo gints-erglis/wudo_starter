@@ -93,6 +93,10 @@ set_value() {
 
 sed "s|^name: .*|name: $name|" .ddev/config.yaml > .ddev/config.yaml.new
 mv .ddev/config.yaml.new .ddev/config.yaml
+if [ -f .rig/project.yaml ]; then
+  sed "s|^project_id: .*|project_id: $name|" .rig/project.yaml > .rig/project.yaml.new
+  mv .rig/project.yaml.new .rig/project.yaml
+fi
 set_value config/sync/system.site.yml name "$title"
 if [ -n "$mail" ]; then
   set_value config/sync/system.site.yml mail "$mail"

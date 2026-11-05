@@ -1,0 +1,31 @@
+# rig: runs AI coding agents (Claude Code, Copilot) for this project in a
+# hardened container under Mearra's central policy. This file can only narrow
+# that policy. Schema:
+# https://github.com/mearra-internal/wrigan/blob/main/policy/schema/project.schema.json
+schema: 1
+# "ddev new-site" sets this to the new site's name.
+project_id: wudo-starter
+runtime: ddev
+packs: [drupal, node]
+drupal:
+  docroot: web
+node:
+  paths: [web/themes/custom/wudo, tests/e2e]
+
+# Masked in the agents container with an empty read-only file, so no tool can
+# read them. Only single files: rig cannot mask a directory.
+sensitive_paths:
+  - .ddev/.env                             # AI_API_KEY and the production secrets
+  - web/sites/default/settings.local.php
+
+narrow:
+  claude:
+    # Database dumps: user accounts and, after "ddev restore", live content.
+    # Directories can't be masked, so these are deny rules only.
+    deny:
+      - Read(./.ddev/db_snapshots/**)
+      - Read(./backups/**)
+      - Read(./**/*.sql)
+      - Read(./**/*.sql.gz)
+      - Bash(*db_snapshots*)
+      - Bash(*backups/*)

@@ -38,6 +38,7 @@ editors on day one, and readable by search engines and AI assistants.
   - [Theme development](#theme-development)
   - [Component catalog](#component-catalog)
   - [Quality checks](#quality-checks)
+  - [AI coding agents](#ai-coding-agents)
 - [Deploying](#deploying)
   - [Production](#production)
   - [Settings and secrets](#settings-and-secrets)
@@ -681,6 +682,22 @@ the site was installed with `--demo`.
 
 `vendor/bin/phpcbf` and `ddev theme lint:css -- --fix` fix most style issues
 automatically.
+
+### AI coding agents
+
+Claude Code and GitHub Copilot run in a hardened agents container with
+[rig](https://github.com/mearra-internal/wrigan), under Mearra's central
+policy, not on your machine directly. With rig installed (see its README):
+
+```bash
+rig up        # renders the policy and starts DDEV with the agents container
+rig claude    # or: rig copilot, ddev claude, ddev copilot
+```
+
+`.rig/project.yaml` holds this project's part of the policy, which can only
+narrow the central one. Agents can't read `.ddev/.env` or `settings.local.php`
+(rig masks them) and are told not to read database dumps. Their instructions
+are in `AGENTS.md`. `ddev new-site` gives a new site its own `project_id`.
 
 ## Deploying
 

@@ -9,12 +9,15 @@
  * @see template_preprocess_paragraph()
  */
 #}
-{% set coordinates = paragraph.field_coordinates.value|split(',') %}
-<div{{ attributes.addClass('paragraph--map') }}>
-  {{ include('wudo:map', {
-    latitude: coordinates[0]|trim * 1,
-    longitude: coordinates[1]|trim * 1,
-    title: paragraph.field_tagline.value,
-    address: paragraph.field_address.value|default(''),
-  }, with_context = false) }}
-</div>
+{# A map being added in the editor may have no coordinates yet. #}
+{% if paragraph.field_coordinates.value is not empty %}
+  {% set coordinates = paragraph.field_coordinates.value|split(',') %}
+  <div{{ attributes.addClass('paragraph--map') }}>
+    {{ include('wudo:map', {
+      latitude: coordinates[0]|trim * 1,
+      longitude: coordinates[1]|trim * 1,
+      title: paragraph.field_tagline.value|default(''),
+      address: paragraph.field_address.value|default(''),
+    }, with_context = false) }}
+  </div>
+{% endif %}

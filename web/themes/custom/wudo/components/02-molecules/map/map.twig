@@ -16,6 +16,9 @@
  */
 #}
 
+{# A map being added in the editor has no name yet. #}
+{% set title = title|default('') %}
+{% set place = title is not empty ? ': ' ~ title : '' %}
 {% set lat = latitude|number_format(6, '.', '') %}
 {% set lon = longitude|number_format(6, '.', '') %}
 {# About 600 by 300 metres around the place. #}
@@ -30,12 +33,12 @@
   <iframe
     class="map__frame"
     src="https://www.openstreetmap.org/export/embed.html?bbox={{ bbox }}&amp;layer=mapnik&amp;marker={{ lat }},{{ lon }}"
-    title="{{ 'Map: @title'|t({'@title': title}) }}"
+    title="{{ title is not empty ? 'Map: @title'|t({'@title': title}) : 'Map'|t }}"
     loading="lazy"
   ></iframe>
   {% if address %}
     <address class="map__address">
-      <strong>{{ title }}</strong><br>
+      {% if title is not empty %}<strong>{{ title }}</strong><br>{% endif %}
       {{ address|nl2br }}
     </address>
   {% endif %}
@@ -48,14 +51,14 @@
       url: 'https://www.openstreetmap.org/?mlat=' ~ lat ~ '&mlon=' ~ lon ~ '#map=17/' ~ lat ~ '/' ~ lon,
       is_external: true,
       is_new_window: true,
-      attributes: create_attribute({'aria-label': 'Larger map'|t ~ ': ' ~ title ~ ' ' ~ new_window}),
+      attributes: create_attribute({'aria-label': 'Larger map'|t ~ place ~ ' ' ~ new_window}),
     }, with_context = false) }}
     {{ include('wudo:link', {
       text: 'Directions'|t,
       url: 'https://www.google.com/maps/dir/?api=1&destination=' ~ lat ~ ',' ~ lon,
       is_external: true,
       is_new_window: true,
-      attributes: create_attribute({'aria-label': 'Directions'|t ~ ': ' ~ title ~ ' ' ~ new_window}),
+      attributes: create_attribute({'aria-label': 'Directions'|t ~ place ~ ' ' ~ new_window}),
     }, with_context = false) }}
   </p>
 </div>

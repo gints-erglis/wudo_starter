@@ -43,6 +43,7 @@
   'layout-wrapper'
 ]
 %}
+{% set layout = paragraph.getBehaviorSetting('style_settings', 'layout', 'grid-1') %}
 {% set background_mask = paragraph.getBehaviorSetting('style_settings', 'background_mask', '') %}
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
@@ -51,7 +52,7 @@
       </div>
     {% endif %}
 
-    <div class="layout-wrapper__content">
+    <div class="layout-wrapper__content layout-columns layout-columns--{{ layout|clean_class }}">
       {{ content }}
     </div>
   </div>

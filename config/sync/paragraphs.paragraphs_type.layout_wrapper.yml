@@ -10,5 +10,7 @@ icon_uuid: null
 icon_default: null
 description: ''
 behavior_plugins:
+  layout_item:
+    enabled: true
   style_settings:
     enabled: true

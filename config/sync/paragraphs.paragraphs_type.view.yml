@@ -1,10 +1,14 @@
 uuid: daa244ce-0bc5-4945-a927-3b51c506bf1b
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - wudo_theme_extension
 id: view
 label: View
 icon_uuid: null
 icon_default: null
 description: ''
-behavior_plugins: {  }
+behavior_plugins:
+  layout_item:
+    enabled: true

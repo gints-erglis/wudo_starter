@@ -43,6 +43,7 @@
   'section'
 ]
 %}
+{% set layout = paragraph.getBehaviorSetting('style_settings', 'layout', 'grid-1') %}
 {% set background_mask = paragraph.getBehaviorSetting('style_settings', 'background_mask', '') %}
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
@@ -62,7 +63,7 @@
     </div>
     {% endif %}
 
-    <div class="section__content">
+    <div class="section__content layout-columns layout-columns--{{ layout|clean_class }}">
       {{ content|without('field_background_image', 'field_parallax_layers') }}
     </div>
   </div>

@@ -1,10 +1,14 @@
 uuid: b67c7d93-955c-4d02-b26c-83c1ef38dcae
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - wudo_theme_extension
 id: text
 label: Text
 icon_uuid: null
 icon_default: null
 description: ''
-behavior_plugins: {  }
+behavior_plugins:
+  layout_item:
+    enabled: true

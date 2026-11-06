@@ -1,0 +1,60 @@
+@use "../../00-base/00-defaults/02-breakpoints" as breakpoint;
+
+// The paragraphs in a Section or Layout: their columns, from its "Layout"
+// setting (StyleSettingsBehavior), and the width of each, from its "Width in
+// the layout" setting (LayoutItemBehavior). On a phone everything is one
+// column at full width, except a line of text, which is never too long.
+
+.layout-columns {
+  // One column keeps the normal flow, so the paragraphs' own margins still
+  // space them as before. :where() keeps this as specific as the layouts
+  // below, so they win.
+  &:where(:not(.layout-columns--grid-1)) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--page-indention);
+  }
+
+  &--grid-auto {
+    grid-template-columns: repeat(auto-fit, minmax(min(30ch, 100%), 1fr));
+  }
+
+  @include breakpoint.mobile {
+    &--grid-2   { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    &--grid-3   { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    &--grid-2-1 { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+    &--grid-1-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+  }
+}
+
+.layout-item {
+  &--full {
+    grid-column: 1 / -1;
+  }
+
+  &--text,
+  &--two-thirds,
+  &--half,
+  &--third {
+    inline-size: 100%;
+  }
+
+  &--text {
+    max-inline-size: 65ch;
+  }
+
+  @include breakpoint.mobile {
+    &--two-thirds { max-inline-size: calc(100% * 2 / 3); }
+    &--half       { max-inline-size: 50%; }
+    &--third      { max-inline-size: calc(100% / 3); }
+  }
+
+  // Auto margins place it in its column, in a grid and in normal flow alike.
+  &--center {
+    margin-inline: auto;
+  }
+
+  &--end {
+    margin-inline-start: auto;
+  }
+}

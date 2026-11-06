@@ -1,5 +1,3 @@
-@use "../../00-base/00-defaults/_03-mixins.scss" as *;
-
 .section {
   position: relative;
   isolation: isolate;
@@ -69,10 +67,6 @@
       max-width: var(--page-max-width);
       margin: 0 auto;
       padding: 0 var(--page-indention);
-    }
-
-    .layout-grid-2 & {
-      @include layout-grid(2);
     }
   }
 

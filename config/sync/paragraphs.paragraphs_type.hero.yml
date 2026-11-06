@@ -12,3 +12,5 @@ description: ''
 behavior_plugins:
   hero_style:
     enabled: true
+  layout_item:
+    enabled: true

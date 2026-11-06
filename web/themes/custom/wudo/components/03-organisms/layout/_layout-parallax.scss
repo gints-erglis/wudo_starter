@@ -1,53 +1,19 @@
-// .parallax-layer {
-//  position: absolute;
-//  --parallax-offset: 0px;
-// }
-// .parallax-layer--top-left {
-//  top: 0;
-//  left: 0;
-//  transform: translate3d(0, var(--parallax-offset), 0);
-// }
-// .parallax-layer--top-center {
-//  top: 0;
-//  left: 50%;
-//  transform: translateX(-50%) translate3d(0, var(--parallax-offset), 0);
-// }
-// .parallax-layer--top-right {
-//  top: 0;
-//  right: 0;
-//  transform: translate3d(0, var(--parallax-offset), 0);
-// }
-// .parallax-layer--center {
-//  top: 50%;
-//  left: 50%;
-//  transform: translate(-50%, -50%) translate3d(0, var(--parallax-offset), 0);
-// }
-// .parallax-layer--bottom-left {
-//  bottom: 0;
-//  left: 0;
-//  transform: translate3d(0, var(--parallax-offset), 0);
-// }
-// .parallax-layer--bottom-center {
-//  bottom: 0;
-//  left: 50%;
-//  transform: translateX(-50%) translate3d(0, var(--parallax-offset), 0);
-// }
-// .parallax-layer--bottom-right {
-//  bottom: 0;
-//  right: 0;
-//  transform: translate3d(0, var(--parallax-offset), 0);
-// }
-// .parallax-layer img,
-// .parallax-layer svg {
-//  display: block;
-//  width: 100%;
-//  height: 100%;
-//  object-fit: contain;
-// }
+// Parallax layers of a Section; parallax.js sets --parallax-offset and, for
+// a layer that fills the section, --parallax-height.
 .parallax-layer {
   position: absolute;
 
   --parallax-offset: 0px;
+
+  // Fills the section. Without JavaScript it is the section's size.
+  &--cover {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: var(--parallax-height, 100%);
+    transform: translate3d(0, calc(-50% + var(--parallax-offset)), 0);
+    will-change: transform;
+  }
 
   &--top-left     { top: 0; left: 0; transform: translate3d(0, var(--parallax-offset), 0); }
   &--top-center   { top: 0; left: 50%; transform: translateX(-50%) translate3d(0, var(--parallax-offset), 0); }

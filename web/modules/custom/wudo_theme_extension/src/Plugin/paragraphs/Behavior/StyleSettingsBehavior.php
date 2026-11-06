@@ -79,11 +79,8 @@ class StyleSettingsBehavior extends ParagraphsBehaviorBase {
     $form['layout_spacing']['layout'] = [
       '#type' => 'select',
       '#title' => $this->t('Layout'),
-      '#options' => [
-        'grid-1' => $this->t('1 Column'),
-        'grid-2' => $this->t('2 Columns'),
-        'grid-auto' => $this->t('Auto'),
-      ],
+      '#description' => $this->t('How the paragraphs in it are laid out. On a phone they are always one below the other. Each paragraph can set its own width under "Width in the layout".'),
+      '#options' => static::layouts(),
       '#default_value' => $paragraph->getBehaviorSetting($this->getPluginId(), 'layout', 'grid-1'),
     ];
 
@@ -208,11 +205,9 @@ class StyleSettingsBehavior extends ParagraphsBehaviorBase {
     $padding = $paragraph->getBehaviorSetting($this->getPluginId(), 'padding', 2);
     $margin_top = $paragraph->getBehaviorSetting($this->getPluginId(), 'margin_top', 0);
     $margin_bottom = $paragraph->getBehaviorSetting($this->getPluginId(), 'margin_bottom', 0);
-    $layout = $paragraph->getBehaviorSetting($this->getPluginId(), 'layout', 'contained');
     $full_width_background = $paragraph->getBehaviorSetting($this->getPluginId(), 'full_width_background', FALSE);
     $color_scheme = $paragraph->getBehaviorSetting($this->getPluginId(), 'color_scheme', '');
 
-    $build['#attributes']['class'][] = 'layout-' . $layout;
     if ($background_style) {
       $build['#attributes']['class'][] = $background_style;
     }
@@ -238,6 +233,23 @@ class StyleSettingsBehavior extends ParagraphsBehaviorBase {
     $build['#attributes']['style'][] = 'padding: ' . $padding . ';';
     $build['#attributes']['style'][] = 'margin-top: ' . $margin_top . ';';
     $build['#attributes']['style'][] = 'margin-bottom: ' . $margin_bottom . ';';
+  }
+
+  /**
+   * The layouts of the paragraphs in a Section or Layout.
+   *
+   * The templates put the layout on the element that holds those paragraphs,
+   * as "layout-columns--<key>"; see _layout-columns.scss.
+   */
+  public static function layouts(): array {
+    return [
+      'grid-1' => t('One column'),
+      'grid-2' => t('Two equal columns'),
+      'grid-2-1' => t('Two columns: wide and narrow (2/3 + 1/3)'),
+      'grid-1-2' => t('Two columns: narrow and wide (1/3 + 2/3)'),
+      'grid-3' => t('Three equal columns'),
+      'grid-auto' => t('As many columns as fit'),
+    ];
   }
 
 }

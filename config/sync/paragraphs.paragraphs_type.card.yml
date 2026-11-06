@@ -1,10 +1,14 @@
 uuid: be6ddbab-4971-44c5-a3ed-b0e9eb6b5ce2
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - wudo_theme_extension
 id: card
 label: Card
 icon_uuid: null
 icon_default: null
 description: ''
-behavior_plugins: {  }
+behavior_plugins:
+  layout_item:
+    enabled: true

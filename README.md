@@ -211,7 +211,7 @@ an article and checks which admin pages open and which answer 403.
 
 | Type | For | Read more |
 | --- | --- | --- |
-| Landing page | Pages built from paragraphs: hero, section, layout, card, media, text, map (a place with its address and directions), parallax layer and view (a list of content). The home page is one. | |
+| Landing page | Pages built from paragraphs: hero, section, layout, card, media, text, map (a place with its address and directions), parallax layer and view (a list of content). A section or layout puts its paragraphs in one, two (equal, 2/3 + 1/3 or 1/3 + 2/3) or three columns, and each paragraph can take the whole row, a fraction of its column or the width of a comfortable line of text. A parallax layer can fill its section at every scroll position. The home page is one. | |
 | Article | Writing: a main image and the body, with the date, reading time and a table of contents from its headings. | [Article pages](#article-pages) |
 | Gallery | A set of images shown in a grid that opens in a lightbox. | |
 | Project | A piece of work for a portfolio: facts, a description, a gallery, and a filtered list of all projects. Optional. | [Adding projects](#adding-projects) |
